@@ -30,7 +30,7 @@ export default async function InventoryPage({
     ? [params.status]
     : ['in_stock', 'reserved', 'temporarily_out'];
 
-  let query = supabase
+  const query = supabase
     .from('vehicle_passages')
     .select(`
       id,
