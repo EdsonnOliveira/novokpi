@@ -56,6 +56,7 @@ export default async function HelpPage() {
                     </div>
                     {video.video_url ? (
                       <a href={video.video_url} target="_blank" rel="noreferrer" className="btn btn-light btn-sm">
+                        <i className="iconoir-eye me-1" aria-hidden="true" />
                         Assistir
                       </a>
                     ) : (

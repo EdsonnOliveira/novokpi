@@ -3,6 +3,7 @@ import { PageTitle } from '@/components/dastone/PageTitle';
 import { Card } from '@/components/dastone/Card';
 import { createClient } from '@/lib/supabase/server';
 import { TableEmptyRow } from '@/components/dastone/EmptyState';
+import { StatusBadge } from '@/components/dastone/TableBadge';
 
 export default async function MasterOnboardingPage() {
   const supabase = await createClient();
@@ -47,7 +48,9 @@ export default async function MasterOnboardingPage() {
                       <td>
                         {done}/{total} etapas
                       </td>
-                      <td>{tenant.is_active ? 'Ativa' : 'Inativa'}</td>
+                      <td>
+                        <StatusBadge label={tenant.is_active ? 'Ativa' : 'Inativa'} active={tenant.is_active} />
+                      </td>
                     </tr>
                   );
                 })

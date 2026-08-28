@@ -3,6 +3,7 @@ import { PageTitle } from '@/components/dastone/PageTitle';
 import { Card } from '@/components/dastone/Card';
 import { createClient } from '@/lib/supabase/server';
 import { TableEmptyRow } from '@/components/dastone/EmptyState';
+import { StatusBadge, ValueBadge } from '@/components/dastone/TableBadge';
 import {
   formatCurrency,
   formatTransactionStatus,
@@ -66,6 +67,7 @@ export default async function FinanceStatementPage({
             href="/finance/statement"
             className={`btn btn-sm ${!accountId ? 'btn-primary' : 'btn-light'}`}
           >
+            <i className="iconoir-check me-1" aria-hidden="true" />
             Todas
           </Link>
           {accounts?.map((account) => (
@@ -74,6 +76,7 @@ export default async function FinanceStatementPage({
               href={`/finance/statement?account=${account.id}`}
               className={`btn btn-sm ${accountId === account.id ? 'btn-primary' : 'btn-light'}`}
             >
+              <i className="iconoir-check me-1" aria-hidden="true" />
               {account.name}
             </Link>
           ))}
@@ -107,11 +110,23 @@ export default async function FinanceStatementPage({
                       <td>{tx.description}</td>
                       <td>{category?.name ?? '—'}</td>
                       <td>{tx.transaction_type === 'income' ? 'Receita' : 'Despesa'}</td>
-                      <td className={tx.transaction_type === 'income' ? 'text-success' : 'text-danger'}>
-                        {tx.transaction_type === 'income' ? '+' : '-'}
-                        {formatCurrency(tx.paid_amount || tx.amount)}
+                      <td>
+                        <ValueBadge
+                          value={
+                            tx.transaction_type === 'income'
+                              ? tx.paid_amount || tx.amount
+                              : -(tx.paid_amount || tx.amount)
+                          }
+                          formatted={`${tx.transaction_type === 'income' ? '+' : '-'}${formatCurrency(tx.paid_amount || tx.amount)}`}
+                          variant={tx.transaction_type === 'income' ? 'income' : 'expense'}
+                        />
                       </td>
-                      <td>{formatTransactionStatus(tx.status)}</td>
+                      <td>
+                        <StatusBadge
+                          status={tx.status}
+                          label={formatTransactionStatus(tx.status)}
+                        />
+                      </td>
                       <td>{tx.origin_label ?? '—'}</td>
                     </tr>
                   );

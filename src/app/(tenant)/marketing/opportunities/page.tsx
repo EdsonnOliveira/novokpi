@@ -3,6 +3,8 @@ import { PageTitle } from '@/components/dastone/PageTitle';
 import { Card } from '@/components/dastone/Card';
 import { createClient } from '@/lib/supabase/server';
 import { TableEmptyRow } from '@/components/dastone/EmptyState';
+import { StatusBadge } from '@/components/dastone/TableBadge';
+import { formatTicketPriority } from '@/lib/ui/table-badges';
 
 export default async function MarketingOpportunitiesPage() {
   const supabase = await createClient();
@@ -54,8 +56,15 @@ export default async function MarketingOpportunitiesPage() {
                     <td>{item.title}</td>
                     <td>{item.person_id ? peopleMap.get(item.person_id) ?? '—' : '—'}</td>
                     <td>{item.assigned_user_id ? profileMap.get(item.assigned_user_id) ?? '—' : '—'}</td>
-                    <td>{item.priority}</td>
-                    <td>{item.status}</td>
+                    <td>
+                      <StatusBadge
+                        status={item.priority}
+                        label={formatTicketPriority(item.priority)}
+                      />
+                    </td>
+                    <td>
+                      <StatusBadge status={item.status} label={item.status} />
+                    </td>
                     <td>{item.due_at ? new Date(item.due_at).toLocaleDateString('pt-BR') : '—'}</td>
                   </tr>
                 ))
@@ -72,9 +81,11 @@ export default async function MarketingOpportunitiesPage() {
       </Card>
       <div className="mt-3 d-flex gap-2">
         <Link href="/crm/demand-queue" className="btn btn-light btn-sm">
+          <i className="iconoir-community me-1" aria-hidden="true" />
           Fila demanda
         </Link>
         <Link href="/crm/offer-queue" className="btn btn-light btn-sm">
+          <i className="iconoir-community me-1" aria-hidden="true" />
           Fila oferta
         </Link>
       </div>

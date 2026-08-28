@@ -87,6 +87,7 @@ export default async function FiscalDocumentDetailPage({ params }: FiscalDocumen
             />
             {document.order_id ? (
               <Link href={`/orders`} className="btn btn-link btn-sm ps-0 mt-2">
+                <i className="iconoir-eye me-1" aria-hidden="true" />
                 Ver pedido vinculado
               </Link>
             ) : null}

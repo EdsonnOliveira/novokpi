@@ -3,6 +3,7 @@ import { Card } from '@/components/dastone/Card';
 import { createClient } from '@/lib/supabase/server';
 import { formatCurrency, formatSubscriptionStatus, joinOne, type BillingRow } from '@/types/master';
 import { TableEmptyRow } from '@/components/dastone/EmptyState';
+import { StatusBadge, ValueBadge } from '@/components/dastone/TableBadge';
 
 export default async function MasterBillingPage() {
   const supabase = await createClient();
@@ -68,8 +69,19 @@ export default async function MasterBillingPage() {
                     <tr key={subscription.id}>
                       <td>{tenant?.name ?? '—'}</td>
                       <td>{plan?.name ?? '—'}</td>
-                      <td>{formatCurrency(plan?.price_monthly ?? 0)}</td>
-                      <td>{formatSubscriptionStatus(subscription.status)}</td>
+                      <td>
+                        <ValueBadge
+                          value={plan?.price_monthly ?? 0}
+                          formatted={formatCurrency(plan?.price_monthly ?? 0)}
+                          variant="price"
+                        />
+                      </td>
+                      <td>
+                        <StatusBadge
+                          status={subscription.status}
+                          label={formatSubscriptionStatus(subscription.status)}
+                        />
+                      </td>
                       <td>{new Date(subscription.started_at).toLocaleDateString('pt-BR')}</td>
                       <td>
                         {subscription.ends_at

@@ -47,6 +47,7 @@ export function PhotoUploadPanel({ passageId }: PhotoUploadPanelProps) {
   return (
     <div className="mb-3">
       <label className="btn btn-primary btn-sm mb-0">
+        <i className="iconoir-upload me-1" aria-hidden="true" />
         {loading ? 'Enviando...' : 'Enviar foto'}
         <input type="file" accept="image/*" className="d-none" onChange={handleUpload} disabled={loading} />
       </label>

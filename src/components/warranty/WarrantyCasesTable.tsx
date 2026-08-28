@@ -2,11 +2,8 @@
 
 import { DataTable, DataTableLink } from '@/components/dastone/DataTable';
 import { WarrantyCaseStatusActions } from '@/components/warranty/WarrantyCaseStatusActions';
-import {
-  formatWarrantyStatus,
-  getWarrantyStatusBadgeClass,
-  type WarrantyCaseTableRow,
-} from '@/types/warranty';
+import { StatusBadge } from '@/components/dastone/TableBadge';
+import { formatWarrantyStatus, type WarrantyCaseTableRow } from '@/types/warranty';
 
 interface WarrantyCasesTableProps {
   rows: WarrantyCaseTableRow[];
@@ -56,9 +53,7 @@ export function WarrantyCasesTable({ rows }: WarrantyCasesTableProps) {
           exportValue: (row) => formatWarrantyStatus(row.status),
           render: (row) => (
             <div className="d-flex flex-column gap-1">
-              <span className={`badge ${getWarrantyStatusBadgeClass(row.status)}`}>
-                {formatWarrantyStatus(row.status)}
-              </span>
+              <StatusBadge status={row.status} label={formatWarrantyStatus(row.status)} />
               <WarrantyCaseStatusActions caseId={row.id} status={row.status} />
             </div>
           ),

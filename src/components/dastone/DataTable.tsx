@@ -111,6 +111,7 @@ export function DataTable<T extends Record<string, unknown>>({
                       className="btn btn-link btn-sm p-0 text-decoration-none"
                       onClick={() => handleSort(col.key)}
                     >
+                      <i className="iconoir-sort me-1" aria-hidden="true" />
                       {col.label}
                       {sortKey === col.key ? (sortDir === 'asc' ? ' ↑' : ' ↓') : null}
                     </button>

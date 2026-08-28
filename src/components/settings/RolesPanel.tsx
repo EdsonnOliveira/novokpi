@@ -151,7 +151,8 @@ export function RolesPanel({ roles, permissions, rolePermissions }: RolesPanelPr
           </div>
           <div className="col-md-2 mb-2">
             <button type="submit" className="btn btn-primary btn-sm w-100" disabled={loading}>
-              {loading ? '...' : 'Novo perfil'}
+              <i className="iconoir-check me-1" aria-hidden="true" />
+              {loading ? 'Salvando...' : 'Novo perfil'}
             </button>
           </div>
         </div>

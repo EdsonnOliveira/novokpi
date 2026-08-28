@@ -1,5 +1,6 @@
 import { PageTitle } from '@/components/dastone/PageTitle';
 import { Card } from '@/components/dastone/Card';
+import { ValueBadge } from '@/components/dastone/TableBadge';
 import { createClient } from '@/lib/supabase/server';
 import { formatCurrency, MONTH_LABELS } from '@/types/finance';
 
@@ -79,18 +80,38 @@ export default async function FinanceCashflowPage() {
               {months.map((row, index) => (
                 <tr key={row.month}>
                   <td>{MONTH_LABELS[index]}</td>
-                  <td className="text-success">{formatCurrency(row.income)}</td>
-                  <td className="text-danger">{formatCurrency(row.expense)}</td>
-                  <td>{formatCurrency(row.income - row.expense)}</td>
+                  <td>
+                    <ValueBadge value={row.income} formatted={formatCurrency(row.income)} variant="income" />
+                  </td>
+                  <td>
+                    <ValueBadge value={row.expense} formatted={formatCurrency(row.expense)} variant="expense" />
+                  </td>
+                  <td>
+                    <ValueBadge
+                      value={row.income - row.expense}
+                      formatted={formatCurrency(row.income - row.expense)}
+                      variant="balance"
+                    />
+                  </td>
                 </tr>
               ))}
             </tbody>
             <tfoot>
               <tr>
                 <th>Total</th>
-                <th className="text-success">{formatCurrency(totalIncome)}</th>
-                <th className="text-danger">{formatCurrency(totalExpense)}</th>
-                <th>{formatCurrency(totalIncome - totalExpense)}</th>
+                <th>
+                  <ValueBadge value={totalIncome} formatted={formatCurrency(totalIncome)} variant="income" />
+                </th>
+                <th>
+                  <ValueBadge value={totalExpense} formatted={formatCurrency(totalExpense)} variant="expense" />
+                </th>
+                <th>
+                  <ValueBadge
+                    value={totalIncome - totalExpense}
+                    formatted={formatCurrency(totalIncome - totalExpense)}
+                    variant="balance"
+                  />
+                </th>
               </tr>
             </tfoot>
           </table>

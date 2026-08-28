@@ -4,6 +4,7 @@ import { Card } from '@/components/dastone/Card';
 import { TableEmptyRow } from '@/components/dastone/EmptyState';
 import { createClient } from '@/lib/supabase/server';
 import { formatCurrency } from '@/types/finance';
+import { StatusBadge, ValueBadge } from '@/components/dastone/TableBadge';
 
 export default async function FinancePage() {
   const supabase = await createClient();
@@ -51,6 +52,7 @@ export default async function FinancePage() {
         breadcrumbs={[{ label: 'Financeiro' }]}
         actions={
           <Link href="/finance/transactions" className="btn btn-primary btn-sm">
+            <i className="iconoir-plus me-1" aria-hidden="true" />
             Novo lançamento
           </Link>
         }
@@ -86,21 +88,27 @@ export default async function FinancePage() {
           <Card title="Atalhos">
             <div className="d-grid gap-2">
               <Link href="/finance/accounts" className="btn btn-light btn-sm">
+                <i className="iconoir-settings me-1" aria-hidden="true" />
                 Contas financeiras
               </Link>
               <Link href="/finance/transactions" className="btn btn-light btn-sm">
+                <i className="iconoir-wallet me-1" aria-hidden="true" />
                 Lançamentos
               </Link>
               <Link href="/finance/statement" className="btn btn-light btn-sm">
+                <i className="iconoir-wallet me-1" aria-hidden="true" />
                 Extrato
               </Link>
               <Link href="/finance/cashflow" className="btn btn-light btn-sm">
+                <i className="iconoir-stats-report me-1" aria-hidden="true" />
                 Fluxo de caixa
               </Link>
               <Link href="/finance/dre" className="btn btn-light btn-sm">
+                <i className="iconoir-stats-report me-1" aria-hidden="true" />
                 DRE
               </Link>
               <Link href="/finance/dispatcher" className="btn btn-light btn-sm">
+                <i className="iconoir-doc-search me-1" aria-hidden="true" />
                 Despachante
               </Link>
             </div>
@@ -121,7 +129,13 @@ export default async function FinancePage() {
                     accountsList.map((account) => (
                       <tr key={account.id}>
                         <td>{account.name}</td>
-                        <td>{formatCurrency(account.current_balance)}</td>
+                        <td>
+                          <ValueBadge
+                            value={account.current_balance}
+                            formatted={formatCurrency(account.current_balance)}
+                            variant="balance"
+                          />
+                        </td>
                       </tr>
                     ))
                   ) : (

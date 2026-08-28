@@ -1,6 +1,7 @@
 'use client';
 
 import { DataTable } from '@/components/dastone/DataTable';
+import { StatusBadge } from '@/components/dastone/TableBadge';
 import { formatQueueStatus, type OfferQueueTableRow } from '@/types/crm';
 
 interface OfferQueueTableProps {
@@ -52,7 +53,9 @@ export function OfferQueueTable({ rows }: OfferQueueTableProps) {
           label: 'Status',
           sortable: true,
           exportValue: (row) => formatQueueStatus(row.status),
-          render: (row) => formatQueueStatus(row.status),
+          render: (row) => (
+            <StatusBadge status={row.status} label={formatQueueStatus(row.status)} />
+          ),
         },
         {
           key: 'createdAt',

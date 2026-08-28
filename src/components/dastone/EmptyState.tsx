@@ -5,6 +5,7 @@ interface EmptyStateProps {
   description?: string;
   actionLabel?: string;
   actionHref?: string;
+  actionIcon?: string;
   icon?: string;
   compact?: boolean;
 }
@@ -14,6 +15,7 @@ export function EmptyState({
   description,
   actionLabel,
   actionHref,
+  actionIcon = 'iconoir-plus',
   icon = 'iconoir-empty-page',
   compact = false,
 }: EmptyStateProps) {
@@ -30,6 +32,7 @@ export function EmptyState({
       {description ? <p className="text-muted mb-3">{description}</p> : null}
       {actionLabel && actionHref ? (
         <Link href={actionHref} className="btn btn-primary btn-sm">
+          <i className={`${actionIcon} me-1`} aria-hidden="true" />
           {actionLabel}
         </Link>
       ) : null}

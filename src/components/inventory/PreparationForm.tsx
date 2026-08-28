@@ -107,7 +107,8 @@ export function PreparationForm({ passageId }: PreparationFormProps) {
             <option value="external">Terceiro</option>
           </select>
           <button type="submit" className="btn btn-primary btn-sm" disabled={loading}>
-            {loading ? '...' : 'Add'}
+            <i className="iconoir-check me-1" aria-hidden="true" />
+            {loading ? 'Adicionando...' : 'Adicionar serviço'}
           </button>
         </div>
       </div>

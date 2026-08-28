@@ -4,6 +4,7 @@ import { FormEvent, useCallback, useState } from 'react';
 import { createClient } from '@/lib/supabase/client';
 import type { TaxonomyBrandRow } from '@/types/master';
 import { TableEmptyRow } from '@/components/dastone/EmptyState';
+import { StatusBadge } from '@/components/dastone/TableBadge';
 
 interface TaxonomyPanelProps {
   brands: TaxonomyBrandRow[];
@@ -89,7 +90,8 @@ export function TaxonomyPanel({ brands }: TaxonomyPanelProps) {
           </div>
           <div className="col-md-2 mb-2">
             <button type="submit" className="btn btn-primary btn-sm w-100" disabled={loading}>
-              {loading ? '...' : 'Add marca'}
+              <i className="iconoir-check me-1" aria-hidden="true" />
+              {loading ? 'Adicionando...' : 'Adicionar marca'}
             </button>
           </div>
         </div>
@@ -115,7 +117,9 @@ export function TaxonomyPanel({ brands }: TaxonomyPanelProps) {
                       ? brand.vehicle_models.map((model) => model.name).join(', ')
                       : '—'}
                   </td>
-                  <td>{brand.is_active ? 'Ativa' : 'Inativa'}</td>
+                  <td>
+                    <StatusBadge label={brand.is_active ? 'Ativa' : 'Inativa'} active={brand.is_active} />
+                  </td>
                   <td>
                     <div className="d-flex gap-1">
                       <button
@@ -124,6 +128,7 @@ export function TaxonomyPanel({ brands }: TaxonomyPanelProps) {
                         disabled={loading}
                         onClick={() => handleToggleBrand(brand.id, brand.is_active)}
                       >
+                        <i className="iconoir-switch-on me-1" aria-hidden="true" />
                         {brand.is_active ? 'Desativar' : 'Ativar'}
                       </button>
                       <button
@@ -132,6 +137,7 @@ export function TaxonomyPanel({ brands }: TaxonomyPanelProps) {
                         disabled={loading}
                         onClick={() => handleDeleteBrand(brand.id)}
                       >
+                        <i className="iconoir-trash me-1" aria-hidden="true" />
                         Excluir
                       </button>
                     </div>

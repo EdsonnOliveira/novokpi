@@ -4,6 +4,7 @@ import { Card } from '@/components/dastone/Card';
 import { createClient } from '@/lib/supabase/server';
 import { formatCurrency, joinOne } from '@/types/orders';
 import { TableEmptyRow } from '@/components/dastone/EmptyState';
+import { ValueBadge } from '@/components/dastone/TableBadge';
 
 interface ProductRow {
   id: string;
@@ -110,8 +111,20 @@ export default async function FinanceProductsPage() {
                       </td>
                       <td>{person?.full_name ?? '—'}</td>
                       <td>{product.product_name}</td>
-                      <td>{formatCurrency(product.amount)}</td>
-                      <td>{formatCurrency(product.commission)}</td>
+                      <td>
+                        <ValueBadge
+                          value={product.amount}
+                          formatted={formatCurrency(product.amount)}
+                          variant="price"
+                        />
+                      </td>
+                      <td>
+                        <ValueBadge
+                          value={product.commission}
+                          formatted={formatCurrency(product.commission)}
+                          variant="price"
+                        />
+                      </td>
                       <td>
                         {product.expected_receipt_at
                           ? new Date(product.expected_receipt_at).toLocaleDateString('pt-BR')

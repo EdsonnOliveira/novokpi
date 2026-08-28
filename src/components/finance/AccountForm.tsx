@@ -83,7 +83,8 @@ export function AccountForm() {
         </div>
         <div className="col-md-2 mb-2">
           <button type="submit" className="btn btn-primary btn-sm w-100" disabled={loading}>
-            {loading ? '...' : 'Add conta'}
+            <i className="iconoir-check me-1" aria-hidden="true" />
+            {loading ? 'Adicionando...' : 'Adicionar conta'}
           </button>
         </div>
       </div>

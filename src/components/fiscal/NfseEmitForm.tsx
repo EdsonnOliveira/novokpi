@@ -3,6 +3,12 @@
 import { useRouter } from 'next/navigation';
 import { FormEvent, useCallback, useState } from 'react';
 import { MaskedInput } from '@/components/dastone/MaskedInput';
+import { FiscalCodeSelect } from '@/components/fiscal/FiscalCodeSelect';
+import { FiscalMunicipalitySelect } from '@/components/fiscal/FiscalMunicipalitySelect';
+import {
+  NBS_SERVICE_CODES,
+  NFSE_SERVICE_CODES,
+} from '@/lib/fiscal/catalogs';
 import { parseMaskNumber } from '@/lib/masks';
 import type { FiscalDocumentNature } from '@/types/fiscal';
 
@@ -12,7 +18,15 @@ const NATURE_OPTIONS: { value: FiscalDocumentNature; label: string }[] = [
   { value: 'other', label: 'Outro' },
 ];
 
-export function NfseEmitForm() {
+interface NfseEmitFormProps {
+  defaultUf?: string;
+  defaultMunicipalityCode?: string;
+}
+
+export function NfseEmitForm({
+  defaultUf = 'SP',
+  defaultMunicipalityCode = '3550308',
+}: NfseEmitFormProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -85,17 +99,31 @@ export function NfseEmitForm() {
           <label className="form-label form-label-sm">Valor do serviço</label>
           <MaskedInput mask="currency" name="serviceValue" className="form-control form-control-sm" required />
         </div>
-        <div className="col-md-3 mb-2">
-          <label className="form-label form-label-sm">Código serviço (6 dígitos)</label>
-          <MaskedInput mask="digits" maxDigits={6} name="serviceCode" className="form-control form-control-sm" defaultValue="010101" required />
+        <div className="col-md-6 mb-2">
+          <label className="form-label form-label-sm">Código do serviço</label>
+          <FiscalCodeSelect
+            name="serviceCode"
+            options={NFSE_SERVICE_CODES}
+            defaultValue="140101"
+            required
+          />
         </div>
-        <div className="col-md-3 mb-2">
-          <label className="form-label form-label-sm">Código NBS (9 dígitos)</label>
-          <MaskedInput mask="digits" maxDigits={9} name="nbsCode" className="form-control form-control-sm" defaultValue="115021000" required />
+        <div className="col-md-6 mb-2">
+          <label className="form-label form-label-sm">Código NBS</label>
+          <FiscalCodeSelect
+            name="nbsCode"
+            options={NBS_SERVICE_CODES}
+            defaultValue="115021000"
+            required
+          />
         </div>
-        <div className="col-md-3 mb-2">
-          <label className="form-label form-label-sm">Município incidência (IBGE)</label>
-          <MaskedInput mask="digits" maxDigits={7} name="municipalityCode" className="form-control form-control-sm" defaultValue="3550308" required />
+        <div className="col-12 mb-2">
+          <FiscalMunicipalitySelect
+            codeFieldName="municipalityCode"
+            defaultUf={defaultUf}
+            defaultMunicipalityCode={defaultMunicipalityCode}
+            required
+          />
         </div>
         <div className="col-md-6 mb-2">
           <label className="form-label form-label-sm">Tomador</label>
@@ -116,6 +144,7 @@ export function NfseEmitForm() {
       </div>
       {error ? <p className="text-danger small mb-2">{error}</p> : null}
       <button type="submit" className="btn btn-primary btn-sm" disabled={loading}>
+        <i className="iconoir-check me-1" aria-hidden="true" />
         {loading ? 'Enfileirando...' : 'Emitir NFS-e'}
       </button>
     </form>

@@ -35,6 +35,7 @@ export default async function MasterDashboardPage() {
         breadcrumbs={[{ label: 'Master' }, { label: 'Dashboard' }]}
         actions={
           <Link href="/master/tenants" className="btn btn-light btn-sm">
+            <i className="iconoir-eye me-1" aria-hidden="true" />
             Ver lojas
           </Link>
         }
@@ -86,12 +87,15 @@ export default async function MasterDashboardPage() {
           <Card title="Acesso rápido">
             <div className="d-flex flex-wrap gap-2">
               <Link href="/master/crm" className="btn btn-primary btn-sm">
+                <i className="iconoir-shop me-1" aria-hidden="true" />
                 CRM Master
               </Link>
               <Link href="/master/analytics" className="btn btn-light btn-sm">
+                <i className="iconoir-stats-report me-1" aria-hidden="true" />
                 Analytics
               </Link>
               <Link href="/master/announcements" className="btn btn-light btn-sm">
+                <i className="iconoir-megaphone me-1" aria-hidden="true" />
                 Comunicados
               </Link>
             </div>

@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { PageTitle } from '@/components/dastone/PageTitle';
 import { Card } from '@/components/dastone/Card';
+import { StatusBadge, ValueBadge } from '@/components/dastone/TableBadge';
 import { CloseOrderButton, DeliveryForm, TransferForm } from '@/components/orders/OrderActions';
 import { TransferStageForm } from '@/components/orders/TransferStageForm';
 import { createClient } from '@/lib/supabase/server';
@@ -185,6 +186,7 @@ export default async function OrderDetailPage({
             <p className="text-muted mb-0">{person?.email ?? '—'}</p>
             {deal ? (
               <Link href={`/crm/${deal.id}`} className="btn btn-light btn-sm mt-2">
+                <i className="iconoir-arrow-right me-1" aria-hidden="true" />
                 Ficha #{String(deal.deal_number).padStart(6, '0')}
               </Link>
             ) : null}
@@ -259,8 +261,16 @@ export default async function OrderDetailPage({
                       <tr key={payment.id}>
                         <td>{payment.payment_method_name ?? '—'}</td>
                         <td>{payment.payee_name ?? '—'}</td>
-                        <td>{formatCurrency(payment.amount)}</td>
-                        <td>{payment.status}</td>
+                        <td>
+                          <ValueBadge
+                            value={payment.amount}
+                            formatted={formatCurrency(payment.amount)}
+                            variant="price"
+                          />
+                        </td>
+                        <td>
+                          <StatusBadge status={payment.status} label={payment.status} />
+                        </td>
                       </tr>
                     ))}
                   </tbody>
@@ -287,8 +297,20 @@ export default async function OrderDetailPage({
                     {products.map((product) => (
                       <tr key={product.id}>
                         <td>{product.product_name}</td>
-                        <td>{formatCurrency(product.amount)}</td>
-                        <td>{formatCurrency(product.commission)}</td>
+                        <td>
+                          <ValueBadge
+                            value={product.amount}
+                            formatted={formatCurrency(product.amount)}
+                            variant="price"
+                          />
+                        </td>
+                        <td>
+                          <ValueBadge
+                            value={product.commission}
+                            formatted={formatCurrency(product.commission)}
+                            variant="income"
+                          />
+                        </td>
                       </tr>
                     ))}
                   </tbody>

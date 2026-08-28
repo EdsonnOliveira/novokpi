@@ -77,6 +77,7 @@ export function CertificateUploadForm({ hasCompany }: CertificateUploadFormProps
       {error ? <p className="text-danger small mb-2">{error}</p> : null}
       {success ? <p className="text-success small mb-2">{success}</p> : null}
       <button type="submit" className="btn btn-outline-primary btn-sm" disabled={loading || !hasCompany}>
+        <i className="iconoir-upload me-1" aria-hidden="true" />
         {loading ? 'Enviando...' : 'Enviar certificado A1'}
       </button>
     </form>

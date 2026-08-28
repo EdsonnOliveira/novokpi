@@ -4,6 +4,7 @@ import { Card } from '@/components/dastone/Card';
 import { createClient } from '@/lib/supabase/server';
 import { formatCurrency, joinOne } from '@/types/inventory';
 import { TableEmptyRow } from '@/components/dastone/EmptyState';
+import { StatusBadge, ValueBadge } from '@/components/dastone/TableBadge';
 
 interface PreparationOrderRow {
   id: string;
@@ -84,8 +85,16 @@ export default async function PreparationListPage() {
                       </td>
                       <td>{order.title}</td>
                       <td>{order.is_internal ? 'Interno' : order.supplier_name ?? 'Terceiro'}</td>
-                      <td>{formatCurrency(order.actual_cost)}</td>
-                      <td>{order.status}</td>
+                      <td>
+                        <ValueBadge
+                          value={order.actual_cost}
+                          formatted={formatCurrency(order.actual_cost)}
+                          variant="price"
+                        />
+                      </td>
+                      <td>
+                        <StatusBadge status={order.status} label={order.status} />
+                      </td>
                     </tr>
                   );
                 })

@@ -5,6 +5,7 @@ import { createClient } from '@/lib/supabase/client';
 import type { MasterTicketRow, TenantListRow } from '@/types/master';
 import { formatTicketStatus, joinOne } from '@/types/master';
 import { TableEmptyRow } from '@/components/dastone/EmptyState';
+import { StatusBadge } from '@/components/dastone/TableBadge';
 
 interface SupportTicketsPanelProps {
   tickets: MasterTicketRow[];
@@ -103,7 +104,8 @@ export function SupportTicketsPanel({ tickets, tenants }: SupportTicketsPanelPro
           </div>
           <div className="col-md-2 mb-2">
             <button type="submit" className="btn btn-primary btn-sm w-100" disabled={loading}>
-              {loading ? '...' : 'Novo chamado'}
+              <i className="iconoir-check me-1" aria-hidden="true" />
+              {loading ? 'Salvando...' : 'Novo chamado'}
             </button>
           </div>
         </div>
@@ -134,7 +136,9 @@ export function SupportTicketsPanel({ tickets, tenants }: SupportTicketsPanelPro
                       ) : null}
                     </td>
                     <td>{tenant?.name ?? '—'}</td>
-                    <td>{formatTicketStatus(ticket.status)}</td>
+                    <td>
+                      <StatusBadge status={ticket.status} label={formatTicketStatus(ticket.status)} />
+                    </td>
                     <td>{new Date(ticket.created_at).toLocaleString('pt-BR')}</td>
                     <td>
                       <select

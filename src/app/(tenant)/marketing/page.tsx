@@ -3,6 +3,7 @@ import { PageTitle } from '@/components/dastone/PageTitle';
 import { Card } from '@/components/dastone/Card';
 import { createClient } from '@/lib/supabase/server';
 import { TableEmptyRow } from '@/components/dastone/EmptyState';
+import { StatusBadge } from '@/components/dastone/TableBadge';
 import {
   formatCampaignChannel,
   formatCampaignStatus,
@@ -47,7 +48,12 @@ export default async function MarketingPage() {
                   <tr key={campaign.id}>
                     <td>{campaign.name}</td>
                     <td>{formatCampaignChannel(campaign.channel)}</td>
-                    <td>{formatCampaignStatus(campaign.status)}</td>
+                    <td>
+                      <StatusBadge
+                        status={campaign.status}
+                        label={formatCampaignStatus(campaign.status)}
+                      />
+                    </td>
                     <td>{campaign.subject ?? '—'}</td>
                     <td>
                       {campaign.scheduled_at
@@ -78,6 +84,7 @@ export default async function MarketingPage() {
           Gerencie oportunidades de marketing vinculadas a clientes e veículos.
         </p>
         <Link href="/marketing/opportunities" className="btn btn-light btn-sm">
+          <i className="iconoir-eye me-1" aria-hidden="true" />
           Abrir oportunidades
         </Link>
       </Card>

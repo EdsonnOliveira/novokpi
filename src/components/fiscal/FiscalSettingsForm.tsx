@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { FormEvent, useCallback, useState } from 'react';
 import { MaskedInput } from '@/components/dastone/MaskedInput';
+import { FiscalMunicipalitySelect } from '@/components/fiscal/FiscalMunicipalitySelect';
 import type { FiscalSettingsRow } from '@/types/fiscal';
 
 interface FiscalSettingsFormProps {
@@ -110,31 +111,13 @@ export function FiscalSettingsForm({ settings }: FiscalSettingsFormProps) {
             defaultValue={settings.inscricao_estadual ?? ''}
           />
         </div>
-        <div className="col-md-3 mb-2">
-          <label className="form-label form-label-sm">Código IBGE município</label>
-          <MaskedInput
-            mask="digits"
-            maxDigits={7}
-            name="codigoMunicipio"
-            className="form-control form-control-sm"
-            defaultValue={settings.codigo_municipio ?? ''}
-          />
-        </div>
-        <div className="col-md-5 mb-2">
-          <label className="form-label form-label-sm">Município</label>
-          <input
-            name="municipio"
-            className="form-control form-control-sm"
-            defaultValue={settings.municipio ?? ''}
-          />
-        </div>
-        <div className="col-md-2 mb-2">
-          <label className="form-label form-label-sm">UF</label>
-          <input
-            name="uf"
-            className="form-control form-control-sm"
-            defaultValue={settings.uf ?? ''}
-            maxLength={2}
+        <div className="col-12 mb-2">
+          <FiscalMunicipalitySelect
+            codeFieldName="codigoMunicipio"
+            municipalityFieldName="municipio"
+            ufFieldName="uf"
+            defaultUf={settings.uf ?? ''}
+            defaultMunicipalityCode={settings.codigo_municipio ?? ''}
           />
         </div>
         <div className="col-md-2 mb-2">
@@ -211,6 +194,7 @@ export function FiscalSettingsForm({ settings }: FiscalSettingsFormProps) {
       {error ? <p className="text-danger small mb-2">{error}</p> : null}
       {success ? <p className="text-success small mb-2">{success}</p> : null}
       <button type="submit" className="btn btn-primary btn-sm" disabled={loading}>
+        <i className="iconoir-check me-1" aria-hidden="true" />
         {loading ? 'Salvando...' : 'Salvar e sincronizar FISQAL'}
       </button>
     </form>

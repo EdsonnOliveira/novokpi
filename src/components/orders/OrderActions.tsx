@@ -49,6 +49,7 @@ export function CloseOrderButton({ orderId, status }: CloseOrderButtonProps) {
   return (
     <div>
       <button type="button" className="btn btn-success btn-sm" disabled={loading} onClick={handleClose}>
+        <i className="iconoir-check-circle me-1" aria-hidden="true" />
         {loading ? 'Fechando...' : 'Fechar pedido'}
       </button>
       {error ? <div className="alert alert-danger py-1 px-2 mt-2 mb-0">{error}</div> : null}
@@ -136,6 +137,7 @@ export function DeliveryForm({ orderId, orderStatus, deliveryStatus }: DeliveryF
         </div>
         <div className="col-md-4 mb-2">
           <button type="submit" className="btn btn-primary btn-sm w-100" disabled={loading}>
+            <i className="iconoir-check me-1" aria-hidden="true" />
             {loading ? 'Salvando...' : 'Registrar entrega'}
           </button>
         </div>
@@ -224,6 +226,7 @@ export function TransferForm({ orderId, vehiclePassageId, hasTransfer }: Transfe
         </div>
         <div className="col-md-4 mb-2">
           <button type="submit" className="btn btn-primary btn-sm w-100" disabled={loading}>
+            <i className="iconoir-check me-1" aria-hidden="true" />
             {loading ? 'Salvando...' : 'Iniciar transferência'}
           </button>
         </div>

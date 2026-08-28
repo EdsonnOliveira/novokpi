@@ -70,6 +70,7 @@ export function TransferStageForm({
           disabled={loading === stage.field}
           onClick={() => handleToggle(stage.field, !stage.done)}
         >
+          <i className="iconoir-check-circle me-1" aria-hidden="true" />
           {stage.label} {stage.done ? '✓' : ''}
         </button>
       ))}

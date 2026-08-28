@@ -446,6 +446,7 @@ export function AgendaCalendar({ initialActivities, initialDeals }: AgendaCalend
                           onClick={() => openViewModal(activity)}
                         >
                           <div className="d-flex align-items-center">
+                            <i className="iconoir-eye me-2 text-muted" aria-hidden="true" />
                             <ActivityAvatar name={activity.person_name} />
                             <div className="flex-grow-1 ms-0 text-truncate">
                               <h5 className={`m-0 fs-13 ${isOverdue ? 'text-danger' : ''}`}>
@@ -534,6 +535,7 @@ export function AgendaCalendar({ initialActivities, initialDeals }: AgendaCalend
         footer={
           <>
             <button type="button" className="btn btn-light" onClick={closeModal}>
+              <i className="iconoir-arrow-left me-1" aria-hidden="true" />
               Fechar
             </button>
             {modalMode === 'create' ? (
@@ -543,11 +545,13 @@ export function AgendaCalendar({ initialActivities, initialDeals }: AgendaCalend
                 disabled={saving}
                 onClick={handleCreate}
               >
+                <i className="iconoir-check me-1" aria-hidden="true" />
                 {saving ? 'Salvando...' : 'Salvar'}
               </button>
             ) : null}
             {modalMode === 'view' ? (
               <button type="button" className="btn btn-primary" onClick={() => setModalMode('complete')}>
+                <i className="iconoir-check me-1" aria-hidden="true" />
                 Concluir
               </button>
             ) : null}
@@ -558,6 +562,7 @@ export function AgendaCalendar({ initialActivities, initialDeals }: AgendaCalend
                 disabled={saving}
                 onClick={handleComplete}
               >
+                <i className="iconoir-check me-1" aria-hidden="true" />
                 {saving ? 'Salvando...' : 'Concluir atividade'}
               </button>
             ) : null}

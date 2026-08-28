@@ -132,6 +132,7 @@ export default async function DealDetailPage({
         actions={
           person ? (
             <Link href={`/crm/people/${person.id}`} className="btn btn-light btn-sm">
+              <i className="iconoir-eye me-1" aria-hidden="true" />
               Ver cliente
             </Link>
           ) : null

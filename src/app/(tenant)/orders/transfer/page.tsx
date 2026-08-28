@@ -3,6 +3,7 @@ import { PageTitle } from '@/components/dastone/PageTitle';
 import { Card } from '@/components/dastone/Card';
 import { createClient } from '@/lib/supabase/server';
 import { TableEmptyRow } from '@/components/dastone/EmptyState';
+import { StatusBadge } from '@/components/dastone/TableBadge';
 import {
   formatOrderNumber,
   formatTransferStatus,
@@ -73,6 +74,7 @@ export default async function TransferPage() {
                 href={`/orders/${order.id}`}
                 className="btn btn-light btn-sm"
               >
+                <i className="iconoir-arrow-right me-1" aria-hidden="true" />
                 {formatOrderNumber(order.order_number)}
               </Link>
             ))}
@@ -126,7 +128,9 @@ export default async function TransferPage() {
                       <td>{transfer.signature_done ? '✓' : '—'}</td>
                       <td>{transfer.sale_communication_done ? '✓' : '—'}</td>
                       <td>{transfer.dispatcher_done ? '✓' : '—'}</td>
-                      <td>{formatTransferStatus(transfer.status)}</td>
+                      <td>
+                        <StatusBadge status={transfer.status} label={formatTransferStatus(transfer.status)} />
+                      </td>
                     </tr>
                   );
                 })

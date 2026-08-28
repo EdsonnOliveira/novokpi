@@ -218,9 +218,11 @@ export default function NewDealPage() {
               ) : null}
               <div className="d-flex gap-2">
                 <button type="submit" className="btn btn-primary" disabled={loading}>
+                  <i className="iconoir-check me-1" aria-hidden="true" />
                   {loading ? 'Salvando...' : 'Abrir ficha'}
                 </button>
                 <Link href="/crm" className="btn btn-light">
+                  <i className="iconoir-arrow-left me-1" aria-hidden="true" />
                   Cancelar
                 </Link>
               </div>

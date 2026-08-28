@@ -44,7 +44,8 @@ export function ReconciliationActions({ item }: ReconciliationActionsProps) {
   return (
     <div>
       <button type="button" className="btn btn-light btn-sm" onClick={handleReconcile} disabled={loading}>
-        {loading ? '...' : 'Conciliar'}
+        <i className="iconoir-arrow-right me-1" aria-hidden="true" />
+        {loading ? 'Conciliando...' : 'Conciliar'}
       </button>
       {error ? <small className="d-block text-danger mt-1">{error}</small> : null}
     </div>

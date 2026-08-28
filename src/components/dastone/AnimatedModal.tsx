@@ -1,6 +1,7 @@
 'use client';
 
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { AnimatedMount } from '@/components/dastone/AnimatedMount';
 
 interface AnimatedModalProps {
@@ -20,6 +21,12 @@ export function AnimatedModal({
   footer,
   size = 'md',
 }: AnimatedModalProps) {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const handleKeyDown = useCallback(
     (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
@@ -30,29 +37,34 @@ export function AnimatedModal({
   );
 
   useEffect(() => {
-    if (open) {
-      document.body.classList.add('modal-open');
-      document.addEventListener('keydown', handleKeyDown);
-      return () => {
-        document.removeEventListener('keydown', handleKeyDown);
-      };
-    }
+    if (!open) return;
 
-    const timer = window.setTimeout(() => {
+    document.body.classList.add('modal-open');
+    document.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
       document.body.classList.remove('modal-open');
-    }, 200);
-
-    return () => window.clearTimeout(timer);
+    };
   }, [handleKeyDown, open]);
+
+  useEffect(
+    () => () => {
+      document.body.classList.remove('modal-open');
+    },
+    [],
+  );
 
   const dialogClass =
     size === 'sm'
-      ? 'modal-dialog modal-dialog-centered modal-sm'
+      ? 'modal-dialog modal-dialog-centered modal-dialog-scrollable modal-sm'
       : size === 'lg'
-        ? 'modal-dialog modal-dialog-centered modal-lg'
-        : 'modal-dialog modal-dialog-centered';
+        ? 'modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg'
+        : 'modal-dialog modal-dialog-centered modal-dialog-scrollable';
 
-  return (
+  if (!mounted) return null;
+
+  return createPortal(
     <>
       <AnimatedMount show={open} inClassName="modal-backdrop-animate-in" outClassName="modal-backdrop-animate-out">
         <div className="modal-backdrop fade show" onClick={onClose} />
@@ -74,6 +86,7 @@ export function AnimatedModal({
           </div>
         </div>
       </AnimatedMount>
-    </>
+    </>,
+    document.body,
   );
 }

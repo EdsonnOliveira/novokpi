@@ -143,6 +143,7 @@ export function AiChatPanel({
         <div className="d-flex justify-content-between align-items-center mb-2">
           <h6 className="mb-0">Conversas</h6>
           <button type="button" className="btn btn-light btn-sm" onClick={handleNewConversation}>
+            <i className="iconoir-plus me-1" aria-hidden="true" />
             Nova
           </button>
         </div>
@@ -213,6 +214,7 @@ export function AiChatPanel({
               disabled={loading}
             />
             <button type="submit" className="btn btn-primary btn-sm" disabled={loading || !input.trim()}>
+              <i className="iconoir-check me-1" aria-hidden="true" />
               {loading ? 'Enviando...' : 'Enviar'}
             </button>
           </div>

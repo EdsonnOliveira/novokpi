@@ -4,6 +4,7 @@ import { AccountForm } from '@/components/finance/AccountForm';
 import { createClient } from '@/lib/supabase/server';
 import { formatAccountType, formatCurrency } from '@/types/finance';
 import { TableEmptyRow } from '@/components/dastone/EmptyState';
+import { StatusBadge, ValueBadge } from '@/components/dastone/TableBadge';
 
 export default async function FinanceAccountsPage() {
   const supabase = await createClient();
@@ -44,9 +45,23 @@ export default async function FinanceAccountsPage() {
                   <tr key={account.id}>
                     <td>{account.name}</td>
                     <td>{formatAccountType(account.account_type)}</td>
-                    <td>{formatCurrency(account.initial_balance)}</td>
-                    <td>{formatCurrency(account.current_balance)}</td>
-                    <td>{account.is_active ? 'Ativa' : 'Inativa'}</td>
+                    <td>
+                      <ValueBadge
+                        value={account.initial_balance}
+                        formatted={formatCurrency(account.initial_balance)}
+                        variant="balance"
+                      />
+                    </td>
+                    <td>
+                      <ValueBadge
+                        value={account.current_balance}
+                        formatted={formatCurrency(account.current_balance)}
+                        variant="balance"
+                      />
+                    </td>
+                    <td>
+                      <StatusBadge label={account.is_active ? 'Ativa' : 'Inativa'} active={account.is_active} />
+                    </td>
                   </tr>
                 ))
               ) : (

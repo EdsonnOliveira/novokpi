@@ -111,9 +111,8 @@ export default function SignupPage() {
                         <div className="col-12">
                           <div className="d-grid mt-3">
                             <button className="btn btn-primary" type="submit" disabled={loading}>
-                              {loading ? 'Criando...' : 'Criar conta'}
-                              <i className="iconoir-user-plus ms-1" />
-                            </button>
+                              <i className="iconoir-user-plus me-1" aria-hidden="true" />
+                              {loading ? 'Criando...' : 'Criar conta'}</button>
                           </div>
                         </div>
                       </div>

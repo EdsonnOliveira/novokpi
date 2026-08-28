@@ -56,6 +56,7 @@ export function ReportUploadPanel({ passageId }: ReportUploadPanelProps) {
         onChange={(event) => setNotes(event.target.value)}
       />
       <label className="btn btn-primary btn-sm mb-0">
+        <i className="iconoir-upload me-1" aria-hidden="true" />
         {loading ? 'Enviando...' : 'Enviar laudo (PDF/imagem)'}
         <input type="file" accept=".pdf,image/*" className="d-none" onChange={handleUpload} disabled={loading} />
       </label>

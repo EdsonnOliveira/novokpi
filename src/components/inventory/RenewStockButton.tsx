@@ -33,6 +33,7 @@ export function RenewStockButton({ passageId }: RenewStockButtonProps) {
 
   return (
     <button type="button" className="btn btn-light btn-sm" onClick={handleRenew} disabled={loading}>
+      <i className="iconoir-refresh-double me-1" aria-hidden="true" />
       {loading ? 'Renovando...' : 'Renovar entrada'}
     </button>
   );

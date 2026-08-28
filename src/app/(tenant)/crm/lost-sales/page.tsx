@@ -105,6 +105,7 @@ export default async function LostSalesPage({
         ]}
         actions={
           <Link href="/settings/lost-reasons" className="btn btn-light btn-sm">
+            <i className="iconoir-warning-circle me-1" aria-hidden="true" />
             Motivos de perda
           </Link>
         }
@@ -128,6 +129,7 @@ export default async function LostSalesPage({
             href="/crm/lost-sales"
             className={`btn btn-sm ${!reasonId ? 'btn-primary' : 'btn-light'}`}
           >
+            <i className="iconoir-check me-1" aria-hidden="true" />
             Todos
           </Link>
           {(reasonsData ?? []).map((reason) => (
@@ -136,6 +138,7 @@ export default async function LostSalesPage({
               href={`/crm/lost-sales?reason=${reason.id}`}
               className={`btn btn-sm ${reasonId === reason.id ? 'btn-primary' : 'btn-light'}`}
             >
+              <i className="iconoir-check me-1" aria-hidden="true" />
               {reason.name}
               {reasonCounts.get(reason.id) ? (
                 <span className="ms-1 badge bg-soft-secondary">
@@ -149,6 +152,7 @@ export default async function LostSalesPage({
               href="/crm/lost-sales?reason=none"
               className={`btn btn-sm ${reasonId === 'none' ? 'btn-primary' : 'btn-light'}`}
             >
+              <i className="iconoir-warning-circle me-1" aria-hidden="true" />
               Sem motivo
               <span className="ms-1 badge bg-soft-secondary">
                 {reasonCounts.get('none')?.count}

@@ -97,9 +97,8 @@ export default function LoginForm() {
                         <div className="col-12">
                           <div className="d-grid mt-3">
                             <button className="btn btn-primary" type="submit" disabled={loading}>
-                              {loading ? 'Entrando...' : 'Entrar'}
-                              <i className="iconoir-log-in ms-1" />
-                            </button>
+                              <i className="iconoir-log-in me-1" aria-hidden="true" />
+                              {loading ? 'Entrando...' : 'Entrar'}</button>
                           </div>
                         </div>
                       </div>

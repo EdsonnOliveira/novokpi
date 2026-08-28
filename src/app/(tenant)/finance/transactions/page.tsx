@@ -3,6 +3,7 @@ import { Card } from '@/components/dastone/Card';
 import { TransactionActions, TransactionForm } from '@/components/finance/TransactionForm';
 import { createClient } from '@/lib/supabase/server';
 import { TableEmptyRow } from '@/components/dastone/EmptyState';
+import { StatusBadge, ValueBadge } from '@/components/dastone/TableBadge';
 import {
   formatCurrency,
   formatTransactionStatus,
@@ -96,10 +97,32 @@ export default async function FinanceTransactionsPage() {
                       <td>{tx.description}</td>
                       <td>{account?.name ?? '—'}</td>
                       <td>{category?.name ?? '—'}</td>
-                      <td>{tx.transaction_type === 'income' ? 'Receita' : 'Despesa'}</td>
-                      <td>{formatCurrency(tx.amount)}</td>
-                      <td>{formatCurrency(tx.paid_amount)}</td>
-                      <td>{formatTransactionStatus(tx.status)}</td>
+                      <td>
+                        <StatusBadge
+                          status={tx.transaction_type}
+                          label={tx.transaction_type === 'income' ? 'Receita' : 'Despesa'}
+                        />
+                      </td>
+                      <td>
+                        <ValueBadge
+                          value={tx.amount}
+                          formatted={formatCurrency(tx.amount)}
+                          variant={tx.transaction_type === 'income' ? 'income' : 'expense'}
+                        />
+                      </td>
+                      <td>
+                        <ValueBadge
+                          value={tx.paid_amount}
+                          formatted={formatCurrency(tx.paid_amount)}
+                          variant={tx.transaction_type === 'income' ? 'income' : 'expense'}
+                        />
+                      </td>
+                      <td>
+                        <StatusBadge
+                          status={tx.status}
+                          label={formatTransactionStatus(tx.status)}
+                        />
+                      </td>
                       <td>{tx.origin_label ?? '—'}</td>
                       <td>
                         <TransactionActions

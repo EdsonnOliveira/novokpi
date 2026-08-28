@@ -5,6 +5,7 @@ import { KpiGrid } from '@/components/dastone/KpiGrid';
 import { PortalAdsTable } from '@/components/integrator/PortalAdsTable';
 import { createClient } from '@/lib/supabase/server';
 import { TableEmptyRow } from '@/components/dastone/EmptyState';
+import { StatusBadge } from '@/components/dastone/TableBadge';
 import {
   formatSyncStatus,
   joinOne,
@@ -86,6 +87,7 @@ export default async function IntegratorPage() {
         breadcrumbs={[{ label: 'Integrador' }]}
         actions={
           <Link href="/inventory" className="btn btn-light btn-sm">
+            <i className="iconoir-eye me-1" aria-hidden="true" />
             Ver estoque
           </Link>
         }
@@ -115,8 +117,18 @@ export default async function IntegratorPage() {
                 integrations.map((integration) => (
                   <tr key={integration.id}>
                     <td>{integration.portal_name}</td>
-                    <td>{integration.is_active ? 'Ativo' : 'Inativo'}</td>
-                    <td>{formatSyncStatus(integration.sync_status)}</td>
+                    <td>
+                      <StatusBadge
+                        label={integration.is_active ? 'Ativo' : 'Inativo'}
+                        active={integration.is_active}
+                      />
+                    </td>
+                    <td>
+                      <StatusBadge
+                        status={integration.sync_status}
+                        label={formatSyncStatus(integration.sync_status)}
+                      />
+                    </td>
                     <td>
                       {integration.last_sync_at
                         ? new Date(integration.last_sync_at).toLocaleString('pt-BR')

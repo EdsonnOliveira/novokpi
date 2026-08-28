@@ -3,6 +3,7 @@ import { Card } from '@/components/dastone/Card';
 import { MasterTenantAccessButton } from '@/components/master/MasterTenantAccessButton';
 import { createClient } from '@/lib/supabase/server';
 import { TableEmptyRow } from '@/components/dastone/EmptyState';
+import { StatusBadge } from '@/components/dastone/TableBadge';
 
 export default async function MasterTenantAccessPage() {
   const supabase = await createClient();
@@ -38,7 +39,9 @@ export default async function MasterTenantAccessPage() {
                     <td>{tenant.name}</td>
                     <td>{tenant.slug}</td>
                     <td>{tenant.email ?? tenant.phone ?? '—'}</td>
-                    <td>{tenant.is_active ? 'Ativa' : 'Inativa'}</td>
+                    <td>
+                      <StatusBadge label={tenant.is_active ? 'Ativa' : 'Inativa'} active={tenant.is_active} />
+                    </td>
                     <td>
                       {tenant.is_active ? (
                         <MasterTenantAccessButton tenantId={tenant.id} tenantName={tenant.name} />

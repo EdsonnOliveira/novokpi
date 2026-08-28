@@ -3,6 +3,12 @@
 import { useRouter } from 'next/navigation';
 import { FormEvent, useCallback, useState } from 'react';
 import { MaskedInput } from '@/components/dastone/MaskedInput';
+import { FiscalCodeSelect } from '@/components/fiscal/FiscalCodeSelect';
+import {
+  NFE_CFOP_CODES,
+  NFE_NATURE_OPERATION_OPTIONS,
+  NFE_NCM_CODES,
+} from '@/lib/fiscal/catalogs';
 import { parseMaskNumber } from '@/lib/masks';
 import type { FiscalDocumentNature } from '@/types/fiscal';
 
@@ -72,22 +78,22 @@ export function NfeEmitForm() {
             ))}
           </select>
         </div>
-        <div className="col-md-3 mb-2">
-          <label className="form-label form-label-sm">Natureza operação</label>
-          <input
+        <div className="col-md-5 mb-2">
+          <label className="form-label form-label-sm">Natureza da operação</label>
+          <FiscalCodeSelect
             name="natureOperation"
-            className="form-control form-control-sm"
+            options={NFE_NATURE_OPERATION_OPTIONS}
             defaultValue="Venda de mercadoria"
             required
           />
         </div>
-        <div className="col-md-3 mb-2">
+        <div className="col-md-4 mb-2">
           <label className="form-label form-label-sm">CFOP</label>
-          <MaskedInput mask="digits" maxDigits={4} name="cfop" className="form-control form-control-sm" defaultValue="5102" required />
+          <FiscalCodeSelect name="cfop" options={NFE_CFOP_CODES} defaultValue="5102" required />
         </div>
-        <div className="col-md-3 mb-2">
+        <div className="col-md-6 mb-2">
           <label className="form-label form-label-sm">NCM</label>
-          <MaskedInput mask="digits" maxDigits={8} name="ncm" className="form-control form-control-sm" defaultValue="87032310" required />
+          <FiscalCodeSelect name="ncm" options={NFE_NCM_CODES} defaultValue="87032310" required />
         </div>
         <div className="col-md-3 mb-2">
           <label className="form-label form-label-sm">Valor total</label>
@@ -112,6 +118,7 @@ export function NfeEmitForm() {
       </div>
       {error ? <p className="text-danger small mb-2">{error}</p> : null}
       <button type="submit" className="btn btn-primary btn-sm" disabled={loading}>
+        <i className="iconoir-check me-1" aria-hidden="true" />
         {loading ? 'Enfileirando...' : 'Emitir NF-e'}
       </button>
     </form>

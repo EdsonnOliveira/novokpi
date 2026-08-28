@@ -154,6 +154,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
           </div>
           <div className="col-auto">
             <button type="submit" className="btn btn-primary btn-sm">
+              <i className="iconoir-search me-1" aria-hidden="true" />
               Buscar
             </button>
           </div>

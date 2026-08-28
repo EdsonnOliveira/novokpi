@@ -4,6 +4,7 @@ import { AlertBadge } from '@/components/dastone/AlertBadge';
 import { AlertRulesPanel } from '@/components/settings/AlertRulesPanel';
 import { createClient } from '@/lib/supabase/server';
 import { TableEmptyRow } from '@/components/dastone/EmptyState';
+import { StatusBadge } from '@/components/dastone/TableBadge';
 
 export default async function AlertRulesPage() {
   const supabase = await createClient();
@@ -51,7 +52,9 @@ export default async function AlertRulesPage() {
                         label={rule.level}
                       />
                     </td>
-                    <td>{rule.is_active ? 'Ativa' : 'Inativa'}</td>
+                    <td>
+                      <StatusBadge label={rule.is_active ? 'Ativa' : 'Inativa'} active={rule.is_active} />
+                    </td>
                   </tr>
                 ))
               ) : (

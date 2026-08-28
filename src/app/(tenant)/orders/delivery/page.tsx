@@ -3,6 +3,7 @@ import { PageTitle } from '@/components/dastone/PageTitle';
 import { Card } from '@/components/dastone/Card';
 import { createClient } from '@/lib/supabase/server';
 import { TableEmptyRow } from '@/components/dastone/EmptyState';
+import { StatusBadge } from '@/components/dastone/TableBadge';
 import {
   formatDeliveryStatus,
   formatOrderNumber,
@@ -138,6 +139,7 @@ export default async function DeliveryPage() {
                 href={`/orders/${order.id}`}
                 className="btn btn-light btn-sm"
               >
+                <i className="iconoir-arrow-right me-1" aria-hidden="true" />
                 {formatOrderNumber(order.order_number)}
               </Link>
             ))}
@@ -185,7 +187,9 @@ export default async function DeliveryPage() {
                       </td>
                       <td>{delivery.delivery_km?.toLocaleString('pt-BR') ?? '—'}</td>
                       <td>{delivery.went_well === null ? '—' : delivery.went_well ? 'Sim' : 'Não'}</td>
-                      <td>{formatDeliveryStatus(delivery.status)}</td>
+                      <td>
+                        <StatusBadge status={delivery.status} label={formatDeliveryStatus(delivery.status)} />
+                      </td>
                     </tr>
                   );
                 })

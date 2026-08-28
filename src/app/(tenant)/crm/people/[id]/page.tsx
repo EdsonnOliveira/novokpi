@@ -51,6 +51,7 @@ export default async function PersonDetailPage({
         ]}
         actions={
           <Link href="/crm/new" className="btn btn-primary btn-sm">
+            <i className="iconoir-plus me-1" aria-hidden="true" />
             Nova Ficha
           </Link>
         }

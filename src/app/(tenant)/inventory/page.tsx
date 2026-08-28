@@ -13,6 +13,8 @@ import {
 } from '@/types/inventory';
 import { redirect } from 'next/navigation';
 import { TableEmptyRow } from '@/components/dastone/EmptyState';
+import { StatusBadge, ValueBadge } from '@/components/dastone/TableBadge';
+import { formatPassageStatus } from '@/lib/ui/table-badges';
 
 export default async function InventoryPage({
   searchParams,
@@ -86,9 +88,11 @@ export default async function InventoryPage({
         actions={
           <div className="d-flex flex-wrap gap-2">
             <Link href="/crm/evaluation" className="btn btn-light btn-sm">
+              <i className="iconoir-chat-bubble me-1" aria-hidden="true" />
               Avaliações
             </Link>
             <Link href="/inventory/quick" className="btn btn-primary btn-sm">
+              <i className="iconoir-plus me-1" aria-hidden="true" />
               Cadastro rápido
             </Link>
           </div>
@@ -144,12 +148,28 @@ export default async function InventoryPage({
                         <Link href={`/inventory/${passage.id}`}>{vehicle?.plate ?? '—'}</Link>
                       </td>
                       <td>{label || '—'}</td>
-                      <td>{passage.status}</td>
+                      <td>
+                        <StatusBadge status={passage.status} label={formatPassageStatus(passage.status)} />
+                      </td>
                       <td>
                         <span className={`badge ${getStockAgeBadgeClass(ageDays)}`}>{ageDays}d</span>
                       </td>
-                      <td>{formatCurrency(passage.cost)}</td>
-                      <td>{passage.sale_price ? formatCurrency(passage.sale_price) : '—'}</td>
+                      <td>
+                        <ValueBadge
+                          value={passage.cost}
+                          formatted={formatCurrency(passage.cost)}
+                          variant="price"
+                        />
+                      </td>
+                      <td>
+                        <ValueBadge
+                          value={passage.sale_price}
+                          formatted={
+                            passage.sale_price ? formatCurrency(passage.sale_price) : '—'
+                          }
+                          variant="price"
+                        />
+                      </td>
                       <td>{formatMargin(passage.cost, passage.sale_price)}</td>
                     </tr>
                   );

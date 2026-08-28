@@ -8,6 +8,7 @@ import {
   joinOne,
   type EvaluationListRow,
 } from '@/types/inventory';
+import { StatusBadge, ValueBadge } from '@/components/dastone/TableBadge';
 
 export default async function EvaluationPage() {
   const supabase = await createClient();
@@ -45,6 +46,7 @@ export default async function EvaluationPage() {
         ]}
         actions={
           <Link href="/crm/evaluation/new" className="btn btn-primary btn-sm">
+            <i className="iconoir-plus me-1" aria-hidden="true" />
             Nova avaliação
           </Link>
         }
@@ -89,10 +91,24 @@ export default async function EvaluationPage() {
                         ) : null}
                       </td>
                       <td>{evaluation.km?.toLocaleString('pt-BR') ?? '—'}</td>
-                      <td>{formatCurrency(evaluation.fipe_value)}</td>
-                      <td>{formatCurrency(evaluation.offered_value)}</td>
+                      <td>
+                        <ValueBadge
+                          value={evaluation.fipe_value}
+                          formatted={formatCurrency(evaluation.fipe_value)}
+                          variant="price"
+                        />
+                      </td>
+                      <td>
+                        <ValueBadge
+                          value={evaluation.offered_value}
+                          formatted={formatCurrency(evaluation.offered_value)}
+                          variant="price"
+                        />
+                      </td>
                       <td>{person?.full_name ?? '—'}</td>
-                      <td>{evaluation.status}</td>
+                      <td>
+                        <StatusBadge status={evaluation.status} label={evaluation.status} />
+                      </td>
                     </tr>
                   );
                 })

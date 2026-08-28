@@ -6,6 +6,7 @@ import { getClientTenantContext } from '@/lib/settings/client-context';
 import type { ProfileListRow, RoleListRow } from '@/types/settings';
 import { joinOne } from '@/types/settings';
 import { TableEmptyRow } from '@/components/dastone/EmptyState';
+import { StatusBadge } from '@/components/dastone/TableBadge';
 
 interface UsersPanelProps {
   profiles: ProfileListRow[];
@@ -104,7 +105,8 @@ export function UsersPanel({ profiles, roles }: UsersPanelProps) {
           </div>
           <div className="col-md-2 mb-2">
             <button type="submit" className="btn btn-primary btn-sm w-100" disabled={loading}>
-              {loading ? '...' : 'Atribuir perfil'}
+              <i className="iconoir-check me-1" aria-hidden="true" />
+              {loading ? 'Salvando...' : 'Atribuir perfil'}
             </button>
           </div>
         </div>
@@ -141,7 +143,12 @@ export function UsersPanel({ profiles, roles }: UsersPanelProps) {
                     <td>{profile.email ?? '—'}</td>
                     <td>{profile.phone ?? '—'}</td>
                     <td>{roleNames || '—'}</td>
-                    <td>{profile.is_active ? 'Ativo' : 'Inativo'}</td>
+                    <td>
+                      <StatusBadge
+                        label={profile.is_active ? 'Ativo' : 'Inativo'}
+                        active={profile.is_active}
+                      />
+                    </td>
                     <td>
                       <button
                         type="button"
@@ -149,6 +156,7 @@ export function UsersPanel({ profiles, roles }: UsersPanelProps) {
                         disabled={loading}
                         onClick={() => handleToggleActive(profile.id, profile.is_active)}
                       >
+                        <i className="iconoir-switch-on me-1" aria-hidden="true" />
                         {profile.is_active ? 'Desativar' : 'Ativar'}
                       </button>
                     </td>

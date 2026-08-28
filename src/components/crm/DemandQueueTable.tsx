@@ -1,6 +1,7 @@
 'use client';
 
 import { DataTable, DataTableLink } from '@/components/dastone/DataTable';
+import { StatusBadge } from '@/components/dastone/TableBadge';
 import { formatQueueStatus, type DemandQueueTableRow } from '@/types/crm';
 
 interface DemandQueueTableProps {
@@ -57,7 +58,9 @@ export function DemandQueueTable({ rows }: DemandQueueTableProps) {
           label: 'Status',
           sortable: true,
           exportValue: (row) => formatQueueStatus(row.status),
-          render: (row) => formatQueueStatus(row.status),
+          render: (row) => (
+            <StatusBadge status={row.status} label={formatQueueStatus(row.status)} />
+          ),
         },
         {
           key: 'createdAt',

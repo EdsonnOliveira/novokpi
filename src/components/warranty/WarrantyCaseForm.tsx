@@ -84,7 +84,8 @@ export function WarrantyCaseForm({ passages, people }: WarrantyCaseFormProps) {
         </div>
         <div className="col-md-2 mb-2">
           <button type="submit" className="btn btn-primary btn-sm w-100" disabled={loading}>
-            {loading ? '...' : 'Abrir'}
+            <i className="iconoir-check me-1" aria-hidden="true" />
+            {loading ? 'Abrindo...' : 'Abrir'}
           </button>
         </div>
       </div>

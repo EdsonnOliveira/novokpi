@@ -149,6 +149,7 @@ export function MasterAiChat({
       <div className="col-12 col-lg-4 col-xl-3">
         <div className="d-grid mb-2">
           <button type="button" className="btn btn-primary btn-sm" disabled={loading} onClick={handleNewConversation}>
+            <i className="iconoir-plus me-1" aria-hidden="true" />
             Nova conversa
           </button>
         </div>
@@ -197,7 +198,8 @@ export function MasterAiChat({
               disabled={loading}
             />
             <button type="submit" className="btn btn-primary btn-sm" disabled={loading}>
-              {loading ? '...' : 'Enviar'}
+              <i className="iconoir-check me-1" aria-hidden="true" />
+              {loading ? 'Enviando...' : 'Enviar'}
             </button>
           </div>
           {error ? <div className="alert alert-danger py-1 px-2 mt-2 mb-0">{error}</div> : null}

@@ -135,7 +135,8 @@ export function TransactionForm({ accounts, categories }: TransactionFormProps) 
         </div>
         <div className="col-md-1 mb-2">
           <button type="submit" className="btn btn-primary btn-sm w-100" disabled={loading}>
-            {loading ? '...' : 'Add'}
+            <i className="iconoir-check me-1" aria-hidden="true" />
+            {loading ? 'Adicionando...' : 'Adicionar lançamento'}
           </button>
         </div>
       </div>
@@ -231,11 +232,13 @@ export function TransactionActions({
     <div className="d-flex gap-1">
       {status === 'pending' || status === 'partial' ? (
         <button type="button" className="btn btn-light btn-sm" disabled={loading} onClick={handlePay}>
+          <i className="iconoir-arrow-right me-1" aria-hidden="true" />
           Baixar
         </button>
       ) : null}
       {status === 'paid' ? (
         <button type="button" className="btn btn-light btn-sm" disabled={loading} onClick={handleReverse}>
+          <i className="iconoir-undo me-1" aria-hidden="true" />
           Estornar
         </button>
       ) : null}

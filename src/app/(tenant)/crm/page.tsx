@@ -6,6 +6,8 @@ import { createClient } from '@/lib/supabase/server';
 import { getTenantContext } from '@/lib/settings/tenant-context';
 import { canViewAllDeals } from '@/lib/permissions/access';
 import { joinOne, type DealListRow } from '@/types/crm';
+import { StatusBadge } from '@/components/dastone/TableBadge';
+import { formatDealStatus } from '@/lib/ui/table-badges';
 import { redirect } from 'next/navigation';
 
 function formatDealNumber(value: number) {
@@ -91,9 +93,11 @@ export default async function CrmPage({
         actions={
           <div className="d-flex gap-2">
             <Link href="/crm/kanban" className="btn btn-light btn-sm">
+              <i className="iconoir-view-grid me-1" aria-hidden="true" />
               Kanban
             </Link>
             <Link href="/crm/new" className="btn btn-primary btn-sm">
+              <i className="iconoir-plus me-1" aria-hidden="true" />
               Nova Ficha
             </Link>
           </div>
@@ -139,7 +143,9 @@ export default async function CrmPage({
                           ? new Date(deal.next_action_at).toLocaleString('pt-BR')
                           : '—'}
                       </td>
-                      <td>{deal.status}</td>
+                      <td>
+                        <StatusBadge status={deal.status} label={formatDealStatus(deal.status)} />
+                      </td>
                     </tr>
                   );
                 })

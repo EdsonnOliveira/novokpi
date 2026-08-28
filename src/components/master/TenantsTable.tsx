@@ -1,6 +1,7 @@
 'use client';
 
 import { DataTable, type DataTableColumn } from '@/components/dastone/DataTable';
+import { StatusBadge } from '@/components/dastone/TableBadge';
 import type { TenantListRow } from '@/types/master';
 import { formatSubscriptionStatus, joinOne } from '@/types/master';
 
@@ -46,13 +47,22 @@ export function TenantsTable({ tenants }: TenantsTableProps) {
       label: 'Assinatura',
       render: (row) => {
         const subscription = joinOne(row.subscriptions);
-        return subscription ? formatSubscriptionStatus(subscription.status) : '—';
+        return subscription ? (
+          <StatusBadge
+            status={subscription.status}
+            label={formatSubscriptionStatus(subscription.status)}
+          />
+        ) : (
+          '—'
+        );
       },
     },
     {
       key: 'is_active',
       label: 'Loja',
-      render: (row) => (row.is_active ? 'Ativa' : 'Inativa'),
+      render: (row) => (
+        <StatusBadge label={row.is_active ? 'Ativa' : 'Inativa'} active={row.is_active} />
+      ),
     },
     {
       key: 'created_at',

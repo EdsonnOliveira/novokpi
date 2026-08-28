@@ -4,6 +4,7 @@ import { FormEvent, useCallback, useState } from 'react';
 import { createClient } from '@/lib/supabase/client';
 import type { MasterAnnouncementRow } from '@/types/master';
 import { TableEmptyRow } from '@/components/dastone/EmptyState';
+import { StatusBadge } from '@/components/dastone/TableBadge';
 
 interface AnnouncementsPanelProps {
   announcements: MasterAnnouncementRow[];
@@ -103,7 +104,8 @@ export function AnnouncementsPanel({ announcements }: AnnouncementsPanelProps) {
           </div>
           <div className="col-md-2 mb-2">
             <button type="submit" className="btn btn-primary btn-sm w-100" disabled={loading}>
-              {loading ? '...' : 'Novo comunicado'}
+              <i className="iconoir-check me-1" aria-hidden="true" />
+              {loading ? 'Salvando...' : 'Novo comunicado'}
             </button>
           </div>
         </div>
@@ -127,7 +129,12 @@ export function AnnouncementsPanel({ announcements }: AnnouncementsPanelProps) {
                     {announcement.title}
                     <small className="text-muted d-block">{announcement.body}</small>
                   </td>
-                  <td>{announcement.is_published ? 'Publicado' : 'Rascunho'}</td>
+                  <td>
+                    <StatusBadge
+                      label={announcement.is_published ? 'Publicado' : 'Rascunho'}
+                      status={announcement.is_published ? 'published' : 'draft'}
+                    />
+                  </td>
                   <td>
                     {announcement.published_at
                       ? new Date(announcement.published_at).toLocaleString('pt-BR')
@@ -141,6 +148,7 @@ export function AnnouncementsPanel({ announcements }: AnnouncementsPanelProps) {
                         disabled={loading}
                         onClick={() => handleTogglePublish(announcement.id, announcement.is_published)}
                       >
+                        <i className="iconoir-switch-on me-1" aria-hidden="true" />
                         {announcement.is_published ? 'Despublicar' : 'Publicar'}
                       </button>
                       <button
@@ -149,6 +157,7 @@ export function AnnouncementsPanel({ announcements }: AnnouncementsPanelProps) {
                         disabled={loading}
                         onClick={() => handleDelete(announcement.id)}
                       >
+                        <i className="iconoir-trash me-1" aria-hidden="true" />
                         Excluir
                       </button>
                     </div>

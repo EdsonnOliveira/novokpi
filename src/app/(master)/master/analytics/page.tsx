@@ -39,6 +39,7 @@ export default async function MasterAnalyticsPage() {
         ]}
         actions={
           <Link href="/master/billing" className="btn btn-light btn-sm">
+            <i className="iconoir-credit-card me-1" aria-hidden="true" />
             Cobrança
           </Link>
         }

@@ -191,6 +191,7 @@ export function DealActionsPanel({
       {!isClosed ? (
         <div className="d-flex gap-2 mb-3">
           <button type="button" className="btn btn-danger btn-sm" onClick={() => setShowLostModal(true)}>
+            <i className="iconoir-warning-circle me-1" aria-hidden="true" />
             Marcar venda perdida
           </button>
         </div>
@@ -220,6 +221,7 @@ export function DealActionsPanel({
           </div>
           <div className="col-md-2 mb-2">
             <button type="submit" className="btn btn-primary btn-sm w-100" disabled={loading}>
+              <i className="iconoir-check me-1" aria-hidden="true" />
               Salvar
             </button>
           </div>
@@ -252,6 +254,7 @@ export function DealActionsPanel({
           </div>
           <div className="col-md-3 mb-2">
             <button type="submit" className="btn btn-light btn-sm w-100" disabled={loading}>
+              <i className="iconoir-check me-1" aria-hidden="true" />
               Salvar e entrar na fila
             </button>
           </div>
@@ -273,6 +276,7 @@ export function DealActionsPanel({
             required
           />
           <button type="submit" className="btn btn-light btn-sm" disabled={loading}>
+            <i className="iconoir-plus me-1" aria-hidden="true" />
             Registrar
           </button>
         </div>
@@ -299,9 +303,11 @@ export function DealActionsPanel({
           </div>
           <div className="d-flex justify-content-end gap-2">
             <button type="button" className="btn btn-light btn-sm" onClick={() => setShowLostModal(false)}>
+              <i className="iconoir-arrow-left me-1" aria-hidden="true" />
               Cancelar
             </button>
             <button type="submit" className="btn btn-danger btn-sm" disabled={loading}>
+              <i className="iconoir-check me-1" aria-hidden="true" />
               Confirmar perda
             </button>
           </div>

@@ -3,6 +3,7 @@ import { Card } from '@/components/dastone/Card';
 import { createClient } from '@/lib/supabase/server';
 import { formatSubscriptionStatus, joinOne, type MasterCrmRow } from '@/types/master';
 import { TableEmptyRow } from '@/components/dastone/EmptyState';
+import { StatusBadge } from '@/components/dastone/TableBadge';
 
 export default async function MasterCrmPage() {
   const supabase = await createClient();
@@ -93,7 +94,9 @@ export default async function MasterCrmPage() {
                         {tenant.email ?? '—'}
                         {tenant.phone ? <small className="text-muted d-block">{tenant.phone}</small> : null}
                       </td>
-                      <td>{stage}</td>
+                      <td>
+                        <StatusBadge label={stage} status={stage} />
+                      </td>
                       <td>{plan?.name ?? '—'}</td>
                       <td>
                         {totalSteps ? `${completedSteps}/${totalSteps} etapas` : '—'}

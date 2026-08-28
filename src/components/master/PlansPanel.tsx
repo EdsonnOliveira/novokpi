@@ -5,6 +5,7 @@ import { createClient } from '@/lib/supabase/client';
 import { slugify } from '@/lib/settings/slug';
 import type { PlanListRow } from '@/types/master';
 import { TableEmptyRow } from '@/components/dastone/EmptyState';
+import { StatusBadge, ValueBadge } from '@/components/dastone/TableBadge';
 
 interface PlansPanelProps {
   plans: PlanListRow[];
@@ -86,7 +87,8 @@ export function PlansPanel({ plans }: PlansPanelProps) {
           </div>
           <div className="col-md-2 mb-2">
             <button type="submit" className="btn btn-primary btn-sm w-100" disabled={loading}>
-              {loading ? '...' : 'Novo plano'}
+              <i className="iconoir-check me-1" aria-hidden="true" />
+              {loading ? 'Salvando...' : 'Novo plano'}
             </button>
           </div>
         </div>
@@ -109,8 +111,22 @@ export function PlansPanel({ plans }: PlansPanelProps) {
                 <tr key={plan.id}>
                   <td>{plan.name}</td>
                   <td>{plan.slug}</td>
-                  <td>{plan.price_monthly.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
-                  <td>{plan.is_active ? 'Ativo' : 'Inativo'}</td>
+                  <td>
+                    <ValueBadge
+                      value={plan.price_monthly}
+                      formatted={plan.price_monthly.toLocaleString('pt-BR', {
+                        style: 'currency',
+                        currency: 'BRL',
+                      })}
+                      variant="price"
+                    />
+                  </td>
+                  <td>
+                    <StatusBadge
+                      label={plan.is_active ? 'Ativo' : 'Inativo'}
+                      active={plan.is_active}
+                    />
+                  </td>
                   <td>
                     <button
                       type="button"
@@ -118,6 +134,7 @@ export function PlansPanel({ plans }: PlansPanelProps) {
                       disabled={loading}
                       onClick={() => handleToggleActive(plan.id, plan.is_active)}
                     >
+                      <i className="iconoir-switch-on me-1" aria-hidden="true" />
                       {plan.is_active ? 'Desativar' : 'Ativar'}
                     </button>
                   </td>

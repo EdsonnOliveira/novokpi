@@ -9,9 +9,9 @@ import {
   formatDocumentStatus,
   formatDocumentType,
   formatFiscalCurrency,
-  getDocumentStatusBadge,
   type FiscalDocumentRow,
 } from '@/types/fiscal';
+import { StatusBadge, ValueBadge } from '@/components/dastone/TableBadge';
 
 function joinOne<T>(value: T | T[] | null): T | null {
   if (!value) return null;
@@ -61,9 +61,11 @@ export default async function FiscalDocumentsPage() {
         actions={
           <div className="d-flex gap-2">
             <Link href="/fiscal/nfse/new" className="btn btn-outline-primary btn-sm">
+              <i className="iconoir-arrow-right me-1" aria-hidden="true" />
               NFS-e
             </Link>
             <Link href="/fiscal/nfe/new" className="btn btn-primary btn-sm">
+              <i className="iconoir-check me-1" aria-hidden="true" />
               NF-e
             </Link>
           </div>
@@ -103,14 +105,19 @@ export default async function FiscalDocumentsPage() {
                           : '—'}
                       </td>
                       <td>{label}</td>
-                      <td>{formatFiscalCurrency(doc.total_value)}</td>
                       <td>
-                        <span className={`badge ${getDocumentStatusBadge(doc.status)}`}>
-                          {formatDocumentStatus(doc.status)}
-                        </span>
+                        <ValueBadge
+                          value={doc.total_value}
+                          formatted={formatFiscalCurrency(doc.total_value)}
+                          variant="price"
+                        />
+                      </td>
+                      <td>
+                        <StatusBadge status={doc.status} label={formatDocumentStatus(doc.status)} />
                       </td>
                       <td>
                         <Link href={`/fiscal/documents/${doc.id}`} className="btn btn-link btn-sm p-0">
+                          <i className="iconoir-eye me-1" aria-hidden="true" />
                           Detalhes
                         </Link>
                       </td>

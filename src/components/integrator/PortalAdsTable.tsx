@@ -2,11 +2,8 @@
 
 import { DataTable, DataTableLink } from '@/components/dastone/DataTable';
 import { PortalAdSyncButton } from '@/components/integrator/PortalAdSyncButton';
-import {
-  formatAdStatus,
-  getAdStatusBadgeClass,
-  type PortalAdTableRow,
-} from '@/types/integrator';
+import { StatusBadge } from '@/components/dastone/TableBadge';
+import { formatAdStatus, type PortalAdTableRow } from '@/types/integrator';
 
 interface PortalAdsTableProps {
   rows: PortalAdTableRow[];
@@ -57,9 +54,7 @@ export function PortalAdsTable({ rows }: PortalAdsTableProps) {
           sortable: true,
           exportValue: (row) => formatAdStatus(row.status),
           render: (row) => (
-            <span className={`badge ${getAdStatusBadgeClass(row.status)}`}>
-              {formatAdStatus(row.status)}
-            </span>
+            <StatusBadge status={row.status} label={formatAdStatus(row.status)} />
           ),
         },
         {

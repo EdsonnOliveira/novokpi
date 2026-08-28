@@ -81,9 +81,11 @@ export default async function DemandQueuePage() {
           <div className="d-flex gap-2 align-items-center">
             <RunQueueMatchingButton tenantId={context.tenantId} userId={context.userId} />
             <Link href="/crm/offer-queue" className="btn btn-light btn-sm">
+              <i className="iconoir-community me-1" aria-hidden="true" />
               Fila oferta
             </Link>
             <Link href="/crm/new" className="btn btn-primary btn-sm">
+              <i className="iconoir-plus me-1" aria-hidden="true" />
               Nova ficha
             </Link>
           </div>

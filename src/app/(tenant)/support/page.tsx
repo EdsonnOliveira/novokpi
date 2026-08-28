@@ -3,6 +3,9 @@ import { Card } from '@/components/dastone/Card';
 import { SupportTicketForm } from '@/components/settings/SupportTicketForm';
 import { createClient } from '@/lib/supabase/server';
 import { TableEmptyRow } from '@/components/dastone/EmptyState';
+import { StatusBadge } from '@/components/dastone/TableBadge';
+import { formatTicketPriority } from '@/lib/ui/table-badges';
+import { formatTicketStatus } from '@/types/master';
 
 export default async function SupportPage() {
   const supabase = await createClient();
@@ -45,8 +48,15 @@ export default async function SupportPage() {
                       <strong>{ticket.subject}</strong>
                       {ticket.description ? <div className="text-muted small">{ticket.description}</div> : null}
                     </td>
-                    <td>{ticket.status}</td>
-                    <td>{ticket.priority}</td>
+                    <td>
+                      <StatusBadge status={ticket.status} label={formatTicketStatus(ticket.status)} />
+                    </td>
+                    <td>
+                      <StatusBadge
+                        status={ticket.priority}
+                        label={formatTicketPriority(ticket.priority)}
+                      />
+                    </td>
                     <td>{new Date(ticket.created_at).toLocaleDateString('pt-BR')}</td>
                   </tr>
                 ))

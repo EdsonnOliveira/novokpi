@@ -1,6 +1,8 @@
 body {
   margin: 0;
   min-height: 100vh;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 @keyframes kpi-fade-in-up {
@@ -277,6 +279,21 @@ body {
   overflow: hidden;
 }
 
+.modal-backdrop {
+  --bs-backdrop-zindex: 10050;
+  z-index: 10050;
+}
+
+.modal {
+  --bs-modal-zindex: 10055;
+  z-index: 10055;
+}
+
+.modal-dialog-scrollable .modal-body {
+  max-height: calc(100vh - 11rem);
+  overflow-y: auto;
+}
+
 .topbar-item .dropdown-menu,
 .topbar-profile-menu {
   z-index: 1100;
@@ -325,6 +342,22 @@ body {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
+}
+
+.table {
+  --kpi-table-stripe-bg: #f4f6f9;
+}
+
+.table > tbody > tr:nth-of-type(odd):not(.table-light) > * {
+  background-color: #ffffff;
+}
+
+.table > tbody > tr:nth-of-type(even):not(.table-light) > * {
+  background-color: var(--kpi-table-stripe-bg);
+}
+
+.table-hover > tbody > tr:hover > * {
+  background-color: var(--bs-table-hover-bg, #eaeff5);
 }
 
 .startbar-overlay {
@@ -428,4 +461,12 @@ body {
 
 .kpi-grid-subtitle {
   min-height: 1.25rem;
+}
+
+.dashboard-kpi-progress {
+  height: 5px;
+}
+
+.dashboard-kpi-progress .progress-bar {
+  border-radius: 999px;
 }

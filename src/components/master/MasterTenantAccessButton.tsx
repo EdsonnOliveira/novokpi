@@ -34,6 +34,7 @@ export function MasterTenantAccessButton({ tenantId, tenantName }: MasterTenantA
 
   return (
     <button type="button" className="btn btn-primary btn-sm" onClick={handleAccess} disabled={loading}>
+      <i className="iconoir-check me-1" aria-hidden="true" />
       {loading ? 'Entrando...' : `Acessar ${tenantName}`}
     </button>
   );

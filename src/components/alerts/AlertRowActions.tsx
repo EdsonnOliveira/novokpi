@@ -43,10 +43,12 @@ export function AlertRowActions({ alertId, isRead, href }: AlertRowActionsProps)
     <div className="d-flex gap-1">
       {href ? (
         <button type="button" className="btn btn-light btn-sm" onClick={handleRead} disabled={loading}>
+          <i className="iconoir-eye me-1" aria-hidden="true" />
           Abrir
         </button>
       ) : null}
       <button type="button" className="btn btn-light btn-sm" onClick={handleDismiss} disabled={loading}>
+        <i className="iconoir-check me-1" aria-hidden="true" />
         Dispensar
       </button>
     </div>

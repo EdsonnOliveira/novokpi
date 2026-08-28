@@ -111,6 +111,7 @@ export function TenantSettingsForm({ tenant }: TenantSettingsFormProps) {
       {error ? <p className="text-danger small mb-2">{error}</p> : null}
       {success ? <p className="text-success small mb-2">{success}</p> : null}
       <button type="submit" className="btn btn-primary btn-sm" disabled={loading}>
+        <i className="iconoir-check me-1" aria-hidden="true" />
         {loading ? 'Salvando...' : 'Salvar'}
       </button>
     </form>

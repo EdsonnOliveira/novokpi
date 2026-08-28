@@ -17,6 +17,7 @@ export default function ReportsPage() {
             <Card title={report.title}>
               <p className="text-muted mb-3">{report.description}</p>
               <Link href={report.href} className="btn btn-primary btn-sm">
+                <i className="iconoir-check me-1" aria-hidden="true" />
                 {report.exportLabel}
               </Link>
             </Card>

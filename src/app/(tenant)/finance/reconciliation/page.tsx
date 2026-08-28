@@ -5,6 +5,7 @@ import { createClient } from '@/lib/supabase/server';
 import { getTenantContext } from '@/lib/settings/tenant-context';
 import { redirect } from 'next/navigation';
 import { TableEmptyRow } from '@/components/dastone/EmptyState';
+import { StatusBadge, ValueBadge } from '@/components/dastone/TableBadge';
 
 function formatCurrency(value: number) {
   return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
@@ -78,8 +79,19 @@ export default async function FinanceReconciliationPage() {
                     <td>{new Date(item.bank_date).toLocaleDateString('pt-BR')}</td>
                     <td>{item.account_id ? accountMap.get(item.account_id) ?? '—' : '—'}</td>
                     <td>{item.description ?? '—'}</td>
-                    <td>{formatCurrency(Number(item.amount))}</td>
-                    <td>{item.is_reconciled ? 'Conciliado' : 'Pendente'}</td>
+                    <td>
+                      <ValueBadge
+                        value={Number(item.amount)}
+                        formatted={formatCurrency(Number(item.amount))}
+                        variant="default"
+                      />
+                    </td>
+                    <td>
+                      <StatusBadge
+                        label={item.is_reconciled ? 'Conciliado' : 'Pendente'}
+                        status={item.is_reconciled ? 'matched' : 'pending'}
+                      />
+                    </td>
                     <td>
                       {!item.is_reconciled ? (
                         <ReconciliationActions

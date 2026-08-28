@@ -15,6 +15,7 @@ import {
 } from '@/types/orders';
 import { redirect } from 'next/navigation';
 import { TableEmptyRow } from '@/components/dastone/EmptyState';
+import { StatusBadge, ValueBadge } from '@/components/dastone/TableBadge';
 
 export default async function OrdersPage({
   searchParams,
@@ -94,6 +95,7 @@ export default async function OrdersPage({
         breadcrumbs={[{ label: 'Pedidos' }]}
         actions={
           <Link href="/orders/reservation" className="btn btn-primary btn-sm">
+            <i className="iconoir-plus me-1" aria-hidden="true" />
             Nova reserva
           </Link>
         }
@@ -149,10 +151,28 @@ export default async function OrdersPage({
                       </td>
                       <td>{person?.full_name ?? '—'}</td>
                       <td>{vehicleLabel}</td>
-                      <td>{formatCurrency(order.total_value)}</td>
-                      <td>{formatOrderStatus(order.status)}</td>
-                      <td>{formatDeliveryStatus(order.delivery_status)}</td>
-                      <td>{formatTransferStatus(order.transfer_status)}</td>
+                      <td>
+                        <ValueBadge
+                          value={order.total_value}
+                          formatted={formatCurrency(order.total_value)}
+                          variant="price"
+                        />
+                      </td>
+                      <td>
+                        <StatusBadge status={order.status} label={formatOrderStatus(order.status)} />
+                      </td>
+                      <td>
+                        <StatusBadge
+                          status={order.delivery_status}
+                          label={formatDeliveryStatus(order.delivery_status)}
+                        />
+                      </td>
+                      <td>
+                        <StatusBadge
+                          status={order.transfer_status}
+                          label={formatTransferStatus(order.transfer_status)}
+                        />
+                      </td>
                     </tr>
                   );
                 })

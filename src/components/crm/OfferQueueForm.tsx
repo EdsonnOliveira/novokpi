@@ -113,7 +113,8 @@ export function OfferQueueForm() {
         </div>
         <div className="col-md-4 mb-2">
           <button type="submit" className="btn btn-primary btn-sm w-100" disabled={loading}>
-            {loading ? '...' : 'Incluir na fila oferta'}
+            <i className="iconoir-check me-1" aria-hidden="true" />
+            {loading ? 'Incluindo...' : 'Incluir na fila oferta'}
           </button>
         </div>
       </div>

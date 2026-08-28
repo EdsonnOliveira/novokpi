@@ -6,8 +6,15 @@ import { getClientTenantContext } from '@/lib/settings/client-context';
 import { slugify } from '@/lib/settings/slug';
 import type { CatalogRow } from '@/types/settings';
 import { TableEmptyRow } from '@/components/dastone/EmptyState';
+import { StatusBadge } from '@/components/dastone/TableBadge';
 
 type CatalogTable = 'channels' | 'lost_reasons' | 'stock_modalities';
+
+const addLabelByTable: Record<CatalogTable, string> = {
+  channels: 'Adicionar canal',
+  lost_reasons: 'Adicionar motivo',
+  stock_modalities: 'Adicionar modalidade',
+};
 
 interface CatalogPanelProps {
   table: CatalogTable;
@@ -135,7 +142,8 @@ export function CatalogPanel({ table, rows, hasSlug = false, hasSortOrder = fals
           ) : null}
           <div className="col-md-2 mb-2">
             <button type="submit" className="btn btn-primary btn-sm w-100" disabled={loading}>
-              {loading ? '...' : 'Adicionar'}
+              <i className="iconoir-check me-1" aria-hidden="true" />
+              {loading ? 'Adicionando...' : addLabelByTable[table]}
             </button>
           </div>
         </div>
@@ -159,7 +167,9 @@ export function CatalogPanel({ table, rows, hasSlug = false, hasSortOrder = fals
                   <td>{row.name}</td>
                   {hasSlug ? <td>{row.slug ?? '—'}</td> : null}
                   {hasSortOrder ? <td>{row.sort_order ?? 0}</td> : null}
-                  <td>{row.is_active ? 'Ativo' : 'Inativo'}</td>
+                  <td>
+                    <StatusBadge label={row.is_active ? 'Ativo' : 'Inativo'} active={row.is_active} />
+                  </td>
                   <td>
                     <div className="d-flex gap-1">
                       <button
@@ -168,6 +178,7 @@ export function CatalogPanel({ table, rows, hasSlug = false, hasSortOrder = fals
                         disabled={loading}
                         onClick={() => handleToggleActive(row.id, row.is_active)}
                       >
+                        <i className="iconoir-switch-on me-1" aria-hidden="true" />
                         {row.is_active ? 'Desativar' : 'Ativar'}
                       </button>
                       <button
@@ -176,6 +187,7 @@ export function CatalogPanel({ table, rows, hasSlug = false, hasSortOrder = fals
                         disabled={loading}
                         onClick={() => handleDelete(row.id)}
                       >
+                        <i className="iconoir-trash me-1" aria-hidden="true" />
                         Excluir
                       </button>
                     </div>

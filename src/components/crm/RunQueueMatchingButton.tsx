@@ -31,6 +31,7 @@ export function RunQueueMatchingButton({ tenantId, userId }: RunQueueMatchingBut
   return (
     <div>
       <button type="button" className="btn btn-light btn-sm" onClick={handleRun} disabled={loading}>
+        <i className="iconoir-arrow-right me-1" aria-hidden="true" />
         {loading ? 'Cruzando...' : 'Executar cruzamento'}
       </button>
       {message ? <small className="text-muted d-block mt-1">{message}</small> : null}

@@ -1,5 +1,6 @@
 import { PageTitle } from '@/components/dastone/PageTitle';
 import { Card } from '@/components/dastone/Card';
+import { ValueBadge } from '@/components/dastone/TableBadge';
 import { createClient } from '@/lib/supabase/server';
 import { buildDreFromTransactions } from '@/lib/finance/transactions';
 import {
@@ -9,6 +10,11 @@ import {
   formatCurrency,
   MONTH_LABELS,
 } from '@/types/finance';
+import type { ValueBadgeVariant } from '@/lib/ui/table-badges';
+
+function renderDreValue(value: number, variant: ValueBadgeVariant) {
+  return <ValueBadge value={value} formatted={formatCurrency(value)} variant={variant} />;
+}
 
 export default async function FinanceDrePage() {
   const supabase = await createClient();
@@ -81,43 +87,52 @@ export default async function FinanceDrePage() {
                 return (
                   <tr key={row.key}>
                     <td>{row.label}</td>
-                    {dreMonths.map((monthRow) => (
-                      <td key={monthRow.month} className="text-end">
-                        {field && field !== 'month'
-                          ? formatCurrency(monthRow[field] as number)
-                          : '—'}
-                      </td>
-                    ))}
+                    {dreMonths.map((monthRow) => {
+                      const amount = field && field !== 'month' ? (monthRow[field] as number) : null;
+                      return (
+                        <td key={monthRow.month} className="text-end">
+                          {amount === null ? '—' : renderDreValue(amount, row.type === 'mixed' ? 'price' : row.type)}
+                        </td>
+                      );
+                    })}
                     <td className="text-end fw-semibold">
-                      {formatCurrency(getRowTotal(row.key))}
+                      {renderDreValue(getRowTotal(row.key), row.type === 'mixed' ? 'price' : row.type)}
                     </td>
                   </tr>
                 );
               })}
               <tr className="table-light">
                 <td>= Lucro bruto</td>
-                {dreMonths.map((monthRow) => (
-                  <td key={monthRow.month} className="text-end">
-                    {formatCurrency(calcGrossProfit(monthRow))}
-                  </td>
-                ))}
+                {dreMonths.map((monthRow) => {
+                  const amount = calcGrossProfit(monthRow);
+                  return (
+                    <td key={monthRow.month} className="text-end">
+                      {renderDreValue(amount, 'balance')}
+                    </td>
+                  );
+                })}
                 <td className="text-end fw-semibold">
-                  {formatCurrency(
+                  {renderDreValue(
                     dreMonths.reduce((sum, row) => sum + calcGrossProfit(row), 0),
+                    'balance',
                   )}
                 </td>
               </tr>
               <tr className="table-primary">
                 <td><strong>= Resultado operacional</strong></td>
-                {dreMonths.map((monthRow) => (
-                  <td key={monthRow.month} className="text-end">
-                    <strong>{formatCurrency(calcOperatingResult(monthRow))}</strong>
-                  </td>
-                ))}
+                {dreMonths.map((monthRow) => {
+                  const amount = calcOperatingResult(monthRow);
+                  return (
+                    <td key={monthRow.month} className="text-end">
+                      <strong>{renderDreValue(amount, 'balance')}</strong>
+                    </td>
+                  );
+                })}
                 <td className="text-end">
                   <strong>
-                    {formatCurrency(
+                    {renderDreValue(
                       dreMonths.reduce((sum, row) => sum + calcOperatingResult(row), 0),
+                      'balance',
                     )}
                   </strong>
                 </td>

@@ -105,7 +105,7 @@ export function AttachmentPanel({
     <div>
       <div className="mb-3">
         <label className="btn btn-primary btn-sm mb-0">
-          <i className="iconoir-attachment me-1" />
+          <i className="iconoir-attachment me-1" aria-hidden="true" />
           {uploading ? 'Enviando...' : 'Anexar arquivo'}
           <input type="file" className="d-none" onChange={handleUpload} disabled={uploading} />
         </label>

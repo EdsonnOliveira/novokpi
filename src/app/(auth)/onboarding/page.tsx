@@ -218,9 +218,8 @@ export default function OnboardingPage() {
                         <div className="col-12">
                           <div className="d-grid mt-3">
                             <button className="btn btn-primary" type="submit" disabled={loading}>
-                              {loading ? 'Salvando...' : 'Concluir e entrar'}
-                              <i className="iconoir-check ms-1" />
-                            </button>
+                              <i className="iconoir-check me-1" aria-hidden="true" />
+                              {loading ? 'Salvando...' : 'Concluir e entrar'}</button>
                           </div>
                         </div>
                       </div>

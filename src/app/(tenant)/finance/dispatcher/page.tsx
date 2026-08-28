@@ -3,6 +3,7 @@ import { Card } from '@/components/dastone/Card';
 import { DispatcherForm } from '@/components/finance/DispatcherForm';
 import { createClient } from '@/lib/supabase/server';
 import { TableEmptyRow } from '@/components/dastone/EmptyState';
+import { StatusBadge, ValueBadge } from '@/components/dastone/TableBadge';
 import {
   formatCurrency,
   joinOne,
@@ -105,11 +106,37 @@ export default async function FinanceDispatcherPage() {
                       <td>
                         {order ? `#${String(order.order_number).padStart(6, '0')}` : '—'}
                       </td>
-                      <td>{formatCurrency(record.advance_received)}</td>
-                      <td>{formatCurrency(record.costs_paid)}</td>
-                      <td>{formatCurrency(record.balance)}</td>
-                      <td>{formatCurrency(record.revenue_recognized)}</td>
-                      <td>{record.status}</td>
+                      <td>
+                        <ValueBadge
+                          value={record.advance_received}
+                          formatted={formatCurrency(record.advance_received)}
+                          variant="price"
+                        />
+                      </td>
+                      <td>
+                        <ValueBadge
+                          value={record.costs_paid}
+                          formatted={formatCurrency(record.costs_paid)}
+                          variant="expense"
+                        />
+                      </td>
+                      <td>
+                        <ValueBadge
+                          value={record.balance}
+                          formatted={formatCurrency(record.balance)}
+                          variant="balance"
+                        />
+                      </td>
+                      <td>
+                        <ValueBadge
+                          value={record.revenue_recognized}
+                          formatted={formatCurrency(record.revenue_recognized)}
+                          variant="income"
+                        />
+                      </td>
+                      <td>
+                        <StatusBadge status={record.status} label={record.status} />
+                      </td>
                     </tr>
                   );
                 })

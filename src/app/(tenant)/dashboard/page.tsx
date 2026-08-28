@@ -152,6 +152,15 @@ export default async function DashboardPage() {
   const channelMetrics = buildChannelMetrics(orders);
   const sellerMetrics = buildSellerMetrics((sellerOrders ?? []) as DashboardSellerOrderRow[]);
   const dailySales = buildDailySalesSeries(orders);
+  const hasSales = orders.length > 0;
+  const hasStock = stockCount > 0;
+  const pendingTotal =
+    (deliveryPendingCount ?? 0) +
+    (demandQueueCount ?? 0) +
+    (preparationPendingCount ?? 0) +
+    (pendingEvaluationsCount ?? 0) +
+    (overdueActivitiesCount ?? 0) +
+    (alertsCount ?? 0);
 
   return (
     <>
@@ -162,9 +171,11 @@ export default async function DashboardPage() {
         actions={
           <div className="d-flex flex-wrap gap-2">
             <Link href="/reports" className="btn btn-light btn-sm">
+              <i className="iconoir-stats-report me-1" aria-hidden="true" />
               Relatórios
             </Link>
             <Link href="/crm/new" className="btn btn-primary btn-sm">
+              <i className="iconoir-plus me-1" aria-hidden="true" />
               Nova Ficha
             </Link>
           </div>
@@ -178,14 +189,31 @@ export default async function DashboardPage() {
             id: 'sales-count',
             label: 'Vendas no mês',
             value: orders.length,
+            suffix: 'vendas',
             href: '/orders?status=closed',
             subtitle: `${salesDealsCount ?? 0} fichas ganhas`,
+            icon: 'iconoir-cart',
+            iconBgClass: 'bg-soft-success',
+            iconColorClass: 'text-success',
+            variant: 'social',
+            empty: !hasSales,
+            emptyTitle: 'Nenhuma venda no mês.',
+            emptyIcon: 'iconoir-cart',
+            emptyActionLabel: 'Ver pedidos',
+            emptyActionHref: '/orders',
           },
           {
             id: 'sales-revenue',
             label: 'Faturamento',
             value: formatCurrency(monthRevenue),
             href: '/orders?status=closed',
+            icon: 'iconoir-wallet',
+            iconBgClass: 'bg-soft-primary',
+            iconColorClass: 'text-primary',
+            variant: 'social',
+            empty: !hasSales,
+            emptyTitle: 'Sem faturamento no mês.',
+            emptyIcon: 'iconoir-wallet',
           },
           {
             id: 'sales-margin',
@@ -193,13 +221,30 @@ export default async function DashboardPage() {
             value: formatCurrency(monthMargin),
             subtitle: averageMarginPercent ? `${averageMarginPercent.toFixed(1)}% margem` : undefined,
             href: '/finance/dre',
+            icon: 'iconoir-coins',
+            iconBgClass: 'bg-soft-warning',
+            iconColorClass: 'text-warning',
+            variant: 'social',
+            empty: !hasSales,
+            emptyTitle: 'Sem lucro registrado.',
+            emptyIcon: 'iconoir-coins',
           },
           {
             id: 'stock-count',
             label: 'Em estoque',
             value: stockCount,
+            suffix: 'veículos',
             href: '/inventory?status=in_stock',
             subtitle: formatCurrency(stockValue),
+            icon: 'iconoir-car',
+            iconBgClass: 'bg-soft-info',
+            iconColorClass: 'text-info',
+            variant: 'social',
+            empty: !hasStock,
+            emptyTitle: 'Nenhum veículo em estoque.',
+            emptyIcon: 'iconoir-car',
+            emptyActionLabel: 'Cadastro rápido',
+            emptyActionHref: '/inventory/quick',
           },
         ]}
       />
@@ -220,36 +265,48 @@ export default async function DashboardPage() {
       <div className="row animate-stagger">
         <div className="col-xl-4 mb-3">
           <Card animate={false} title="Pendências">
-            <ul className="list-group list-group-flush">
-              <li className="list-group-item d-flex justify-content-between px-0">
-                <Link href="/orders/pending">Entrega</Link>
-                <span className="badge bg-soft-warning">{deliveryPendingCount ?? 0}</span>
-              </li>
-              <li className="list-group-item d-flex justify-content-between px-0">
-                <Link href="/crm/demand-queue">Fila demanda</Link>
-                <span className="badge bg-soft-warning">{demandQueueCount ?? 0}</span>
-              </li>
-              <li className="list-group-item d-flex justify-content-between px-0">
-                <Link href="/inventory/preparation">Preparação/OS</Link>
-                <span className="badge bg-soft-warning">{preparationPendingCount ?? 0}</span>
-              </li>
-              <li className="list-group-item d-flex justify-content-between px-0">
-                <Link href="/crm/evaluation">Avaliações</Link>
-                <span className="badge bg-soft-warning">{pendingEvaluationsCount ?? 0}</span>
-              </li>
-              <li className="list-group-item d-flex justify-content-between px-0">
-                <Link href="/agenda">Atividades atrasadas</Link>
-                <span className={`badge ${(overdueActivitiesCount ?? 0) > 0 ? 'bg-soft-danger' : 'bg-soft-secondary'}`}>
-                  {overdueActivitiesCount ?? 0}
-                </span>
-              </li>
-              <li className="list-group-item d-flex justify-content-between px-0">
-                <Link href="/alerts">Alertas</Link>
-                <span className={`badge ${(alertsCount ?? 0) > 0 ? 'bg-soft-danger' : 'bg-soft-secondary'}`}>
-                  {alertsCount ?? 0}
-                </span>
-              </li>
-            </ul>
+            {pendingTotal > 0 ? (
+              <ul className="list-group list-group-flush">
+                {(deliveryPendingCount ?? 0) > 0 ? (
+                  <li className="list-group-item d-flex justify-content-between px-0">
+                    <Link href="/orders/pending">Entrega</Link>
+                    <span className="badge bg-soft-warning">{deliveryPendingCount}</span>
+                  </li>
+                ) : null}
+                {(demandQueueCount ?? 0) > 0 ? (
+                  <li className="list-group-item d-flex justify-content-between px-0">
+                    <Link href="/crm/demand-queue">Fila demanda</Link>
+                    <span className="badge bg-soft-warning">{demandQueueCount}</span>
+                  </li>
+                ) : null}
+                {(preparationPendingCount ?? 0) > 0 ? (
+                  <li className="list-group-item d-flex justify-content-between px-0">
+                    <Link href="/inventory/preparation">Preparação/OS</Link>
+                    <span className="badge bg-soft-warning">{preparationPendingCount}</span>
+                  </li>
+                ) : null}
+                {(pendingEvaluationsCount ?? 0) > 0 ? (
+                  <li className="list-group-item d-flex justify-content-between px-0">
+                    <Link href="/crm/evaluation">Avaliações</Link>
+                    <span className="badge bg-soft-warning">{pendingEvaluationsCount}</span>
+                  </li>
+                ) : null}
+                {(overdueActivitiesCount ?? 0) > 0 ? (
+                  <li className="list-group-item d-flex justify-content-between px-0">
+                    <Link href="/agenda">Atividades atrasadas</Link>
+                    <span className="badge bg-soft-danger">{overdueActivitiesCount}</span>
+                  </li>
+                ) : null}
+                {(alertsCount ?? 0) > 0 ? (
+                  <li className="list-group-item d-flex justify-content-between px-0">
+                    <Link href="/alerts">Alertas</Link>
+                    <span className="badge bg-soft-danger">{alertsCount}</span>
+                  </li>
+                ) : null}
+              </ul>
+            ) : (
+              <EmptyState title="Nenhuma pendência no momento." icon="iconoir-check-circle" compact />
+            )}
           </Card>
         </div>
         <div className="col-xl-4 mb-3">
@@ -258,6 +315,7 @@ export default async function DashboardPage() {
             title="Próximas atividades"
             actions={
               <Link href="/agenda" className="btn btn-light btn-sm">
+                <i className="iconoir-eye me-1" aria-hidden="true" />
                 Ver agenda
               </Link>
             }
@@ -302,6 +360,7 @@ export default async function DashboardPage() {
             title="Alertas recentes"
             actions={
               <Link href="/alerts" className="btn btn-light btn-sm">
+                <i className="iconoir-eye me-1" aria-hidden="true" />
                 Ver todos
               </Link>
             }
@@ -327,6 +386,7 @@ export default async function DashboardPage() {
         title="Fichas abertas recentes"
         actions={
           <Link href="/crm?status=open" className="btn btn-light btn-sm">
+            <i className="iconoir-eye me-1" aria-hidden="true" />
             Ver CRM
           </Link>
         }

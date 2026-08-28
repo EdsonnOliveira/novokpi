@@ -149,9 +149,11 @@ export default async function CrmKanbanPage() {
         actions={
           <>
             <Link href="/crm/new" className="btn btn-primary btn-sm">
+              <i className="iconoir-plus me-1" aria-hidden="true" />
               Nova ficha
             </Link>
             <Link href="/crm" className="btn btn-light btn-sm">
+              <i className="iconoir-list me-1" aria-hidden="true" />
               Tabela
             </Link>
           </>

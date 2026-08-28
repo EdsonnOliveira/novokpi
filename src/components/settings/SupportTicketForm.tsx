@@ -63,7 +63,8 @@ export function SupportTicketForm() {
         </div>
         <div className="col-md-2 mb-2">
           <button type="submit" className="btn btn-primary btn-sm w-100" disabled={loading}>
-            {loading ? '...' : 'Enviar'}
+            <i className="iconoir-check me-1" aria-hidden="true" />
+            {loading ? 'Enviando...' : 'Enviar'}
           </button>
         </div>
       </div>

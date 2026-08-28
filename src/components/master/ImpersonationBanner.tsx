@@ -25,6 +25,7 @@ export function ImpersonationBanner({ tenantName }: ImpersonationBannerProps) {
         Você está acessando a loja <strong>{tenantName}</strong> como master.
       </span>
       <button type="button" className="btn btn-light btn-sm" onClick={handleExit} disabled={loading}>
+        <i className="iconoir-arrow-right me-1" aria-hidden="true" />
         {loading ? 'Saindo...' : 'Sair da loja'}
       </button>
     </div>

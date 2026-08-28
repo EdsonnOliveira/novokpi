@@ -90,6 +90,7 @@ export function FiscalDocumentActions({
             onClick={syncStatus}
             disabled={loading !== null}
           >
+            <i className="iconoir-refresh me-1" aria-hidden="true" />
             {loading === 'sync' ? 'Sincronizando...' : 'Atualizar status'}
           </button>
         ) : null}
@@ -101,6 +102,7 @@ export function FiscalDocumentActions({
               onClick={() => openAsset('pdf')}
               disabled={loading !== null}
             >
+              <i className="iconoir-page me-1" aria-hidden="true" />
               {loading === 'pdf' ? 'Abrindo...' : 'PDF'}
             </button>
             <button
@@ -109,6 +111,7 @@ export function FiscalDocumentActions({
               onClick={() => openAsset('xml')}
               disabled={loading !== null}
             >
+              <i className="iconoir-page me-1" aria-hidden="true" />
               {loading === 'xml' ? 'Abrindo...' : 'XML'}
             </button>
           </>
@@ -120,6 +123,7 @@ export function FiscalDocumentActions({
             onClick={cancelDocument}
             disabled={loading !== null}
           >
+            <i className="iconoir-warning-circle me-1" aria-hidden="true" />
             {loading === 'cancel' ? 'Cancelando...' : 'Cancelar nota'}
           </button>
         ) : null}

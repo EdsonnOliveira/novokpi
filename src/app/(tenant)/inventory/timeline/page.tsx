@@ -69,6 +69,7 @@ export default async function InventoryTimelineShortcutPage({
           {links.length ? (
             links.map((item) => (
               <Link key={item.id} href={`/inventory/${item.id}?tab=timeline`} className="btn btn-light btn-sm">
+                <i className="iconoir-arrow-right me-1" aria-hidden="true" />
                 {item.plate}
               </Link>
             ))

@@ -39,6 +39,7 @@ export function PortalAdSyncButton({ adId }: PortalAdSyncButtonProps) {
   return (
     <div>
       <button type="button" className="btn btn-primary btn-sm" onClick={handleSync} disabled={loading}>
+        <i className="iconoir-check me-1" aria-hidden="true" />
         {loading ? 'Sincronizando...' : 'Sincronizar'}
       </button>
       {message ? <small className="text-muted d-block mt-1">{message}</small> : null}

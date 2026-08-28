@@ -30,6 +30,7 @@ export function RunAlertsButton() {
   return (
     <div>
       <button type="button" className="btn btn-light btn-sm" onClick={handleRun} disabled={loading}>
+        <i className="iconoir-arrow-right me-1" aria-hidden="true" />
         {loading ? 'Executando...' : 'Executar regras'}
       </button>
       {result ? <small className="text-muted d-block mt-1">{result}</small> : null}

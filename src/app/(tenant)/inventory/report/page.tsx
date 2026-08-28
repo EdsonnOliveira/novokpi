@@ -43,6 +43,7 @@ export default async function InventoryReportShortcutPage() {
           {links.length ? (
             links.map((item) => (
               <Link key={item.id} href={`/inventory/${item.id}?tab=report`} className="btn btn-light btn-sm">
+                <i className="iconoir-arrow-right me-1" aria-hidden="true" />
                 {item.plate}
               </Link>
             ))

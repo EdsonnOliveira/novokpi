@@ -5,6 +5,7 @@ import { KpiGrid } from '@/components/dastone/KpiGrid';
 import { GeneratedDocumentsTable } from '@/components/documents/GeneratedDocumentsTable';
 import { createClient } from '@/lib/supabase/server';
 import { TableEmptyRow } from '@/components/dastone/EmptyState';
+import { StatusBadge } from '@/components/dastone/TableBadge';
 import {
   formatTemplateType,
   joinOne,
@@ -69,6 +70,7 @@ export default async function DocumentsPage() {
         breadcrumbs={[{ label: 'Documentos' }]}
         actions={
           <Link href="/documents/generate" className="btn btn-primary btn-sm">
+            <i className="iconoir-page me-1" aria-hidden="true" />
             Gerar documento
           </Link>
         }
@@ -100,7 +102,9 @@ export default async function DocumentsPage() {
                     <td>{template.name}</td>
                     <td>{template.slug}</td>
                     <td>{formatTemplateType(template.template_type)}</td>
-                    <td>{template.is_active ? 'Ativo' : 'Inativo'}</td>
+                    <td>
+                      <StatusBadge label={template.is_active ? 'Ativo' : 'Inativo'} active={template.is_active} />
+                    </td>
                     <td>{new Date(template.created_at).toLocaleDateString('pt-BR')}</td>
                   </tr>
                 ))

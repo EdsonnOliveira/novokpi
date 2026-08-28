@@ -321,9 +321,11 @@ export default function NewEvaluationPage() {
               {error ? <div className="alert alert-danger py-2">{error}</div> : null}
               <div className="d-flex gap-2">
                 <button type="submit" className="btn btn-primary" disabled={loading}>
+                  <i className="iconoir-check me-1" aria-hidden="true" />
                   {loading ? 'Salvando...' : 'Salvar avaliação'}
                 </button>
                 <Link href="/crm/evaluation" className="btn btn-light">
+                  <i className="iconoir-arrow-left me-1" aria-hidden="true" />
                   Cancelar
                 </Link>
               </div>

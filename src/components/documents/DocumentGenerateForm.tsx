@@ -143,6 +143,7 @@ export function DocumentGenerateForm({
         </div>
       </div>
       <button type="submit" className="btn btn-primary btn-sm" disabled={loading}>
+        <i className="iconoir-check me-1" aria-hidden="true" />
         {loading ? 'Gerando...' : 'Gerar documento'}
       </button>
       {error ? <div className="alert alert-danger py-1 px-2 mt-2 mb-0">{error}</div> : null}

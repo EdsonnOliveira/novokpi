@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { PageTitle } from '@/components/dastone/PageTitle';
 import { Card } from '@/components/dastone/Card';
+import { ValueBadge } from '@/components/dastone/TableBadge';
 import { TimelinePanel } from '@/components/dastone/TimelinePanel';
 import { PhotoUploadPanel } from '@/components/inventory/PhotoUploadPanel';
 import { ReportUploadPanel } from '@/components/inventory/ReportUploadPanel';
@@ -299,7 +300,13 @@ export default async function InventoryDetailPage({
                       <tr key={item.id}>
                         <td>{item.title}</td>
                         <td>{item.is_internal ? 'Interno' : item.supplier_name ?? 'Terceiro'}</td>
-                        <td>{formatCurrency(item.actual_cost)}</td>
+                        <td>
+                          <ValueBadge
+                            value={item.actual_cost}
+                            formatted={formatCurrency(item.actual_cost)}
+                            variant="expense"
+                          />
+                        </td>
                       </tr>
                     ))}
                   </tbody>
@@ -409,6 +416,7 @@ export default async function InventoryDetailPage({
               <p className="text-muted mb-0">Veículo sem anúncios publicados.</p>
             )}
             <Link href="/integrator" className="btn btn-light btn-sm mt-2">
+              <i className="iconoir-eye me-1" aria-hidden="true" />
               Ver integrador
             </Link>
           </Card>

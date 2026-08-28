@@ -38,6 +38,7 @@ export default async function WindshieldDocumentPage() {
         ]}
         actions={
           <Link href="/documents/generate" className="btn btn-light btn-sm">
+            <i className="iconoir-page me-1" aria-hidden="true" />
             Gerar documento
           </Link>
         }

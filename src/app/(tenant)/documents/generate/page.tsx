@@ -38,6 +38,7 @@ export default async function DocumentGeneratePage() {
         ]}
         actions={
           <Link href="/documents" className="btn btn-light btn-sm">
+            <i className="iconoir-arrow-left me-1" aria-hidden="true" />
             Voltar
           </Link>
         }

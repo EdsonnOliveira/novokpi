@@ -9,9 +9,9 @@ import {
   formatDocumentStatus,
   formatDocumentType,
   formatFiscalCurrency,
-  getDocumentStatusBadge,
   type FiscalDocumentRow,
 } from '@/types/fiscal';
+import { StatusBadge, ValueBadge } from '@/components/dastone/TableBadge';
 
 function joinOne<T>(value: T | T[] | null): T | null {
   if (!value) return null;
@@ -79,9 +79,11 @@ export default async function FiscalPage() {
         actions={
           <div className="d-flex gap-2">
             <Link href="/fiscal/nfse/new" className="btn btn-outline-primary btn-sm">
+              <i className="iconoir-plus me-1" aria-hidden="true" />
               Nova NFS-e
             </Link>
             <Link href="/fiscal/nfe/new" className="btn btn-primary btn-sm">
+              <i className="iconoir-plus me-1" aria-hidden="true" />
               Nova NF-e
             </Link>
           </div>
@@ -123,15 +125,19 @@ export default async function FiscalPage() {
           <Card title="Atalhos">
             <div className="d-grid gap-2">
               <Link href="/fiscal/settings" className="btn btn-light btn-sm">
+                <i className="iconoir-page me-1" aria-hidden="true" />
                 Configuração fiscal
               </Link>
               <Link href="/fiscal/documents" className="btn btn-light btn-sm">
+                <i className="iconoir-arrow-right me-1" aria-hidden="true" />
                 Todas as notas
               </Link>
               <Link href="/fiscal/nfse/new" className="btn btn-light btn-sm">
+                <i className="iconoir-check me-1" aria-hidden="true" />
                 Emitir NFS-e
               </Link>
               <Link href="/fiscal/nfe/new" className="btn btn-light btn-sm">
+                <i className="iconoir-check me-1" aria-hidden="true" />
                 Emitir NF-e
               </Link>
             </div>
@@ -170,14 +176,19 @@ export default async function FiscalPage() {
                               : '—'}
                           </td>
                           <td>{label}</td>
-                          <td>{formatFiscalCurrency(doc.total_value)}</td>
                           <td>
-                            <span className={`badge ${getDocumentStatusBadge(doc.status)}`}>
-                              {formatDocumentStatus(doc.status)}
-                            </span>
+                            <ValueBadge
+                              value={doc.total_value}
+                              formatted={formatFiscalCurrency(doc.total_value)}
+                              variant="price"
+                            />
+                          </td>
+                          <td>
+                            <StatusBadge status={doc.status} label={formatDocumentStatus(doc.status)} />
                           </td>
                           <td>
                             <Link href={`/fiscal/documents/${doc.id}`} className="btn btn-link btn-sm p-0">
+                              <i className="iconoir-eye me-1" aria-hidden="true" />
                               Ver
                             </Link>
                           </td>
