@@ -4,6 +4,7 @@ import { FormEvent, useCallback, useState } from 'react';
 import { createClient } from '@/lib/supabase/client';
 import type { MasterTicketRow, TenantListRow } from '@/types/master';
 import { formatTicketStatus, joinOne } from '@/types/master';
+import { TableEmptyRow } from '@/components/dastone/EmptyState';
 
 interface SupportTicketsPanelProps {
   tickets: MasterTicketRow[];
@@ -152,11 +153,11 @@ export function SupportTicketsPanel({ tickets, tenants }: SupportTicketsPanelPro
                 );
               })
             ) : (
-              <tr>
-                <td colSpan={5} className="text-center text-muted py-4">
-                  Nenhum chamado registrado.
-                </td>
-              </tr>
+              <TableEmptyRow
+                colSpan={5}
+                title="Nenhum chamado registrado."
+                icon="iconoir-headset-help"
+              />
             )}
           </tbody>
         </table>

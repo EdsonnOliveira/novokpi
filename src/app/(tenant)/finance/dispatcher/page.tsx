@@ -2,6 +2,7 @@ import { PageTitle } from '@/components/dastone/PageTitle';
 import { Card } from '@/components/dastone/Card';
 import { DispatcherForm } from '@/components/finance/DispatcherForm';
 import { createClient } from '@/lib/supabase/server';
+import { TableEmptyRow } from '@/components/dastone/EmptyState';
 import {
   formatCurrency,
   joinOne,
@@ -113,11 +114,11 @@ export default async function FinanceDispatcherPage() {
                   );
                 })
               ) : (
-                <tr>
-                  <td colSpan={9} className="text-center text-muted py-4">
-                    Nenhum registro de despachante.
-                  </td>
-                </tr>
+                <TableEmptyRow
+                  colSpan={9}
+                  title="Nenhum registro de despachante."
+                  icon="iconoir-doc-search"
+                />
               )}
             </tbody>
           </table>

@@ -5,6 +5,7 @@ import { createClient } from '@/lib/supabase/client';
 import { getClientTenantContext } from '@/lib/settings/client-context';
 import { slugify } from '@/lib/settings/slug';
 import type { CatalogRow } from '@/types/settings';
+import { TableEmptyRow } from '@/components/dastone/EmptyState';
 
 type CatalogTable = 'channels' | 'lost_reasons' | 'stock_modalities';
 
@@ -182,11 +183,11 @@ export function CatalogPanel({ table, rows, hasSlug = false, hasSortOrder = fals
                 </tr>
               ))
             ) : (
-              <tr>
-                <td colSpan={hasSlug && hasSortOrder ? 5 : hasSlug || hasSortOrder ? 4 : 3} className="text-center text-muted py-4">
-                  Nenhum registro cadastrado.
-                </td>
-              </tr>
+              <TableEmptyRow
+                colSpan={hasSlug && hasSortOrder ? 5 : hasSlug || hasSortOrder ? 4 : 3}
+                title="Nenhum registro cadastrado."
+                icon="iconoir-list"
+              />
             )}
           </tbody>
         </table>

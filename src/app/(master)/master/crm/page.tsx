@@ -2,6 +2,7 @@ import { PageTitle } from '@/components/dastone/PageTitle';
 import { Card } from '@/components/dastone/Card';
 import { createClient } from '@/lib/supabase/server';
 import { formatSubscriptionStatus, joinOne, type MasterCrmRow } from '@/types/master';
+import { TableEmptyRow } from '@/components/dastone/EmptyState';
 
 export default async function MasterCrmPage() {
   const supabase = await createClient();
@@ -102,11 +103,11 @@ export default async function MasterCrmPage() {
                   );
                 })
               ) : (
-                <tr>
-                  <td colSpan={6} className="text-center text-muted py-4">
-                    Nenhuma loja no pipeline.
-                  </td>
-                </tr>
+                <TableEmptyRow
+                  colSpan={6}
+                  title="Nenhuma loja no pipeline."
+                  icon="iconoir-page"
+                />
               )}
             </tbody>
           </table>

@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { PageTitle } from '@/components/dastone/PageTitle';
 import { Card } from '@/components/dastone/Card';
+import { TableEmptyRow } from '@/components/dastone/EmptyState';
 import { createClient } from '@/lib/supabase/server';
 import { formatCurrency } from '@/types/finance';
 
@@ -124,9 +125,11 @@ export default async function FinancePage() {
                       </tr>
                     ))
                   ) : (
-                    <tr>
-                      <td colSpan={2} className="text-muted">Nenhuma conta.</td>
-                    </tr>
+                    <TableEmptyRow
+                      colSpan={2}
+                      title="Nenhuma conta."
+                      icon="iconoir-bank"
+                    />
                   )}
                 </tbody>
               </table>

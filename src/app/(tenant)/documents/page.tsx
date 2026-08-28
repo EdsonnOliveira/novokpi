@@ -4,6 +4,7 @@ import { Card } from '@/components/dastone/Card';
 import { KpiGrid } from '@/components/dastone/KpiGrid';
 import { GeneratedDocumentsTable } from '@/components/documents/GeneratedDocumentsTable';
 import { createClient } from '@/lib/supabase/server';
+import { TableEmptyRow } from '@/components/dastone/EmptyState';
 import {
   formatTemplateType,
   joinOne,
@@ -104,11 +105,11 @@ export default async function DocumentsPage() {
                   </tr>
                 ))
               ) : (
-                <tr>
-                  <td colSpan={5} className="text-center text-muted py-4">
-                    Nenhum modelo cadastrado.
-                  </td>
-                </tr>
+                <TableEmptyRow
+                  colSpan={5}
+                  title="Nenhum modelo cadastrado."
+                  icon="iconoir-page"
+                />
               )}
             </tbody>
           </table>

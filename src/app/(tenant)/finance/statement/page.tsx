@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { PageTitle } from '@/components/dastone/PageTitle';
 import { Card } from '@/components/dastone/Card';
 import { createClient } from '@/lib/supabase/server';
+import { TableEmptyRow } from '@/components/dastone/EmptyState';
 import {
   formatCurrency,
   formatTransactionStatus,
@@ -116,11 +117,11 @@ export default async function FinanceStatementPage({
                   );
                 })
               ) : (
-                <tr>
-                  <td colSpan={8} className="text-center text-muted py-4">
-                    Nenhuma movimentação.
-                  </td>
-                </tr>
+                <TableEmptyRow
+                  colSpan={8}
+                  title="Nenhuma movimentação."
+                  icon="iconoir-wallet"
+                />
               )}
             </tbody>
           </table>

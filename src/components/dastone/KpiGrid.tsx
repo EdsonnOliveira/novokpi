@@ -21,8 +21,8 @@ export function KpiGrid({ items, columns = 4 }: KpiGridProps) {
   return (
     <div className="row mb-3 animate-stagger g-2 g-md-3">
       {items.map((item, index) => (
-        <div key={item.id} className={`col-12 ${colClass}`}>
-          <Card animateDelay={index * 45}>
+        <div key={item.id} className={`col-12 ${colClass} d-flex`}>
+          <Card animateDelay={index * 45} className="h-100 w-100">
             <p className="text-muted mb-1">{item.label}</p>
             {item.href ? (
               <Link href={item.href} className="text-decoration-none">
@@ -31,7 +31,7 @@ export function KpiGrid({ items, columns = 4 }: KpiGridProps) {
             ) : (
               <h4 className={`mb-0 ${item.badgeClass ?? ''}`}>{item.value}</h4>
             )}
-            {item.subtitle ? <p className="text-muted mb-0 small mt-1">{item.subtitle}</p> : null}
+            <p className="text-muted mb-0 small mt-1 kpi-grid-subtitle">{item.subtitle ?? '\u00A0'}</p>
           </Card>
         </div>
       ))}

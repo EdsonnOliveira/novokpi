@@ -21,6 +21,7 @@ interface DataTableProps<T> {
   exportFilename?: string;
   emptyTitle?: string;
   emptyDescription?: string;
+  emptyIcon?: string;
   emptyActionLabel?: string;
   emptyActionHref?: string;
   getRowKey: (row: T) => string;
@@ -34,6 +35,7 @@ export function DataTable<T extends Record<string, unknown>>({
   exportFilename,
   emptyTitle = 'Nenhum registro encontrado',
   emptyDescription,
+  emptyIcon = 'iconoir-empty-page',
   emptyActionLabel,
   emptyActionHref,
   getRowKey,
@@ -130,8 +132,10 @@ export function DataTable<T extends Record<string, unknown>>({
                   <EmptyState
                     title={emptyTitle}
                     description={emptyDescription}
+                    icon={emptyIcon}
                     actionLabel={emptyActionLabel}
                     actionHref={emptyActionHref}
+                    compact
                   />
                 </td>
               </tr>

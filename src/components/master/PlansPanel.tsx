@@ -4,6 +4,7 @@ import { FormEvent, useCallback, useState } from 'react';
 import { createClient } from '@/lib/supabase/client';
 import { slugify } from '@/lib/settings/slug';
 import type { PlanListRow } from '@/types/master';
+import { TableEmptyRow } from '@/components/dastone/EmptyState';
 
 interface PlansPanelProps {
   plans: PlanListRow[];
@@ -123,11 +124,11 @@ export function PlansPanel({ plans }: PlansPanelProps) {
                 </tr>
               ))
             ) : (
-              <tr>
-                <td colSpan={5} className="text-center text-muted py-4">
-                  Nenhum plano cadastrado.
-                </td>
-              </tr>
+              <TableEmptyRow
+                colSpan={5}
+                title="Nenhum plano cadastrado."
+                icon="iconoir-credit-card"
+              />
             )}
           </tbody>
         </table>

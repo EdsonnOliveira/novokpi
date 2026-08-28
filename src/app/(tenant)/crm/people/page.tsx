@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { PageTitle } from '@/components/dastone/PageTitle';
 import { Card } from '@/components/dastone/Card';
 import { createClient } from '@/lib/supabase/server';
+import { TableEmptyRow } from '@/components/dastone/EmptyState';
 
 export default async function PeoplePage() {
   const supabase = await createClient();
@@ -46,11 +47,11 @@ export default async function PeoplePage() {
                   </tr>
                 ))
               ) : (
-                <tr>
-                  <td colSpan={4} className="text-center text-muted py-4">
-                    Nenhum cliente cadastrado.
-                  </td>
-                </tr>
+                <TableEmptyRow
+                  colSpan={4}
+                  title="Nenhum cliente cadastrado."
+                  icon="iconoir-user"
+                />
               )}
             </tbody>
           </table>

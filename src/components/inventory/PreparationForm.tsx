@@ -1,6 +1,8 @@
 'use client';
 
 import { FormEvent, useCallback, useState } from 'react';
+import { MaskedInput } from '@/components/dastone/MaskedInput';
+import { parseMaskNumber } from '@/lib/masks';
 import { createPreparationOrder } from '@/lib/inventory/vehicles';
 import { createClient } from '@/lib/supabase/client';
 import { getClientTenantContext } from '@/lib/settings/client-context';
@@ -44,7 +46,7 @@ export function PreparationForm({ passageId }: PreparationFormProps) {
           description: description || undefined,
           isInternal,
           supplierName: supplierName || undefined,
-          actualCost: Number(actualCost),
+          actualCost: parseMaskNumber(actualCost),
         });
 
         setTitle('');
@@ -76,13 +78,12 @@ export function PreparationForm({ passageId }: PreparationFormProps) {
           />
         </div>
         <div className="col-md-3 mb-2">
-          <input
-            type="number"
-            step="0.01"
+          <MaskedInput
+            mask="currency"
             className="form-control form-control-sm"
             placeholder="Custo efetivo"
             value={actualCost}
-            onChange={(e) => setActualCost(e.target.value)}
+            onValueChange={setActualCost}
             required
           />
         </div>

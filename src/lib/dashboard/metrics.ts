@@ -182,3 +182,40 @@ export function formatPortalAdStatus(status: string) {
   };
   return labels[status] ?? status;
 }
+
+export interface DailySalesPoint {
+  label: string;
+  sales: number;
+  revenue: number;
+}
+
+export function buildDailySalesSeries(
+  orders: Array<{ closed_at: string | null; total_value: number | null }>,
+): DailySalesPoint[] {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = now.getMonth();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const map = new Map<string, DailySalesPoint>();
+
+  for (let day = 1; day <= daysInMonth; day += 1) {
+    const date = new Date(year, month, day);
+    const key = date.toISOString().slice(0, 10);
+    map.set(key, {
+      label: date.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' }),
+      sales: 0,
+      revenue: 0,
+    });
+  }
+
+  orders.forEach((order) => {
+    if (!order.closed_at) return;
+    const key = order.closed_at.slice(0, 10);
+    const current = map.get(key);
+    if (!current) return;
+    current.sales += 1;
+    current.revenue += Number(order.total_value ?? 0);
+  });
+
+  return [...map.values()];
+}

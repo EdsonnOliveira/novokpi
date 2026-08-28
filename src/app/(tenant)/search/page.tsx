@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { EmptyState } from '@/components/dastone/EmptyState';
 import { PageTitle } from '@/components/dastone/PageTitle';
 import { Card } from '@/components/dastone/Card';
 import { createClient } from '@/lib/supabase/server';
@@ -179,7 +180,9 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
                 ))}
               </ul>
             ) : (
-              <p className="text-muted small mb-4">Nenhuma pessoa encontrada.</p>
+              <div className="mb-4">
+                <EmptyState title="Nenhuma pessoa encontrada." icon="iconoir-user" compact />
+              </div>
             )}
 
             <h6 className="mb-2">Fichas</h6>
@@ -198,7 +201,9 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
                 })}
               </ul>
             ) : (
-              <p className="text-muted small mb-4">Nenhuma ficha encontrada.</p>
+              <div className="mb-4">
+                <EmptyState title="Nenhuma ficha encontrada." icon="iconoir-page" compact />
+              </div>
             )}
 
             <h6 className="mb-2">Veículos</h6>
@@ -217,7 +222,9 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
                 })}
               </ul>
             ) : (
-              <p className="text-muted small mb-4">Nenhum veículo encontrado.</p>
+              <div className="mb-4">
+                <EmptyState title="Nenhum veículo encontrado." icon="iconoir-car" compact />
+              </div>
             )}
 
             <h6 className="mb-2">Pedidos</h6>
@@ -236,7 +243,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
                 })}
               </ul>
             ) : (
-              <p className="text-muted small mb-0">Nenhum pedido encontrado.</p>
+              <EmptyState title="Nenhum pedido encontrado." icon="iconoir-cart" compact />
             )}
           </>
         )}

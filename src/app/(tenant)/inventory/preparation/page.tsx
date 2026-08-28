@@ -3,6 +3,7 @@ import { PageTitle } from '@/components/dastone/PageTitle';
 import { Card } from '@/components/dastone/Card';
 import { createClient } from '@/lib/supabase/server';
 import { formatCurrency, joinOne } from '@/types/inventory';
+import { TableEmptyRow } from '@/components/dastone/EmptyState';
 
 interface PreparationOrderRow {
   id: string;
@@ -89,11 +90,11 @@ export default async function PreparationListPage() {
                   );
                 })
               ) : (
-                <tr>
-                  <td colSpan={6} className="text-center text-muted py-4">
-                    Nenhuma OS registrada.
-                  </td>
-                </tr>
+                <TableEmptyRow
+                  colSpan={6}
+                  title="Nenhuma OS registrada."
+                  icon="iconoir-tools"
+                />
               )}
             </tbody>
           </table>

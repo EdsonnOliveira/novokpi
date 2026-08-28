@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { PageTitle } from '@/components/dastone/PageTitle';
 import { Card } from '@/components/dastone/Card';
 import { createClient } from '@/lib/supabase/server';
+import { TableEmptyRow } from '@/components/dastone/EmptyState';
 
 export default async function MasterOnboardingPage() {
   const supabase = await createClient();
@@ -51,11 +52,11 @@ export default async function MasterOnboardingPage() {
                   );
                 })
               ) : (
-                <tr>
-                  <td colSpan={3} className="text-center text-muted py-4">
-                    Nenhuma loja cadastrada.
-                  </td>
-                </tr>
+                <TableEmptyRow
+                  colSpan={3}
+                  title="Nenhuma loja cadastrada."
+                  icon="iconoir-shop"
+                />
               )}
             </tbody>
           </table>

@@ -3,6 +3,7 @@
 import { FormEvent, useCallback, useState } from 'react';
 import { createClient } from '@/lib/supabase/client';
 import type { MasterAnnouncementRow } from '@/types/master';
+import { TableEmptyRow } from '@/components/dastone/EmptyState';
 
 interface AnnouncementsPanelProps {
   announcements: MasterAnnouncementRow[];
@@ -155,11 +156,11 @@ export function AnnouncementsPanel({ announcements }: AnnouncementsPanelProps) {
                 </tr>
               ))
             ) : (
-              <tr>
-                <td colSpan={4} className="text-center text-muted py-4">
-                  Nenhum comunicado cadastrado.
-                </td>
-              </tr>
+              <TableEmptyRow
+                colSpan={4}
+                title="Nenhum comunicado cadastrado."
+                icon="iconoir-megaphone"
+              />
             )}
           </tbody>
         </table>

@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { FormEvent, useCallback, useEffect, useState } from 'react';
 import { PageTitle } from '@/components/dastone/PageTitle';
 import { Card } from '@/components/dastone/Card';
+import { MaskedInput } from '@/components/dastone/MaskedInput';
 import { FormPageSkeleton } from '@/components/dastone/skeleton/FormPageSkeleton';
 import { createQuickDeal } from '@/lib/crm/deals';
 import { createClient } from '@/lib/supabase/client';
@@ -131,12 +132,12 @@ export default function NewDealPage() {
                   <label htmlFor="phone" className="form-label">
                     Telefone
                   </label>
-                  <input
+                  <MaskedInput
                     id="phone"
-                    type="tel"
+                    mask="phone"
                     className="form-control"
                     value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
+                    onValueChange={setPhone}
                   />
                 </div>
                 <div className="col-md-6 mb-3">

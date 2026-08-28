@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { PageTitle } from '@/components/dastone/PageTitle';
 import { Card } from '@/components/dastone/Card';
 import { createClient } from '@/lib/supabase/server';
+import { TableEmptyRow } from '@/components/dastone/EmptyState';
 import {
   formatDeliveryStatus,
   formatOrderNumber,
@@ -189,11 +190,11 @@ export default async function DeliveryPage() {
                   );
                 })
               ) : (
-                <tr>
-                  <td colSpan={7} className="text-center text-muted py-4">
-                    Nenhuma entrega registrada.
-                  </td>
-                </tr>
+                <TableEmptyRow
+                  colSpan={7}
+                  title="Nenhuma entrega registrada."
+                  icon="iconoir-delivery-truck"
+                />
               )}
             </tbody>
           </table>

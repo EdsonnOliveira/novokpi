@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { PageTitle } from '@/components/dastone/PageTitle';
 import { Card } from '@/components/dastone/Card';
 import { createClient } from '@/lib/supabase/server';
+import { TableEmptyRow } from '@/components/dastone/EmptyState';
 import {
   formatCampaignChannel,
   formatCampaignStatus,
@@ -62,11 +63,11 @@ export default async function MarketingPage() {
                   </tr>
                 ))
               ) : (
-                <tr>
-                  <td colSpan={7} className="text-center text-muted py-4">
-                    Nenhuma campanha cadastrada.
-                  </td>
-                </tr>
+                <TableEmptyRow
+                  colSpan={7}
+                  title="Nenhuma campanha cadastrada."
+                  icon="iconoir-megaphone"
+                />
               )}
             </tbody>
           </table>

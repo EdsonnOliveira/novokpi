@@ -5,7 +5,9 @@ import { useRouter } from 'next/navigation';
 import { FormEvent, useCallback, useEffect, useState } from 'react';
 import { PageTitle } from '@/components/dastone/PageTitle';
 import { Card } from '@/components/dastone/Card';
+import { MaskedInput } from '@/components/dastone/MaskedInput';
 import { FormPageSkeleton } from '@/components/dastone/skeleton/FormPageSkeleton';
+import { parseMaskInteger, parseMaskNumber } from '@/lib/masks';
 import { createEvaluation } from '@/lib/inventory/vehicles';
 import { createClient } from '@/lib/supabase/client';
 import { getClientTenantContext } from '@/lib/settings/client-context';
@@ -117,9 +119,9 @@ export default function NewEvaluationPage() {
           plate: plate || undefined,
           yearModel: yearModel ? Number(yearModel) : undefined,
           color: color || undefined,
-          km: km ? Number(km) : undefined,
-          fipeValue: fipeValue ? Number(fipeValue) : undefined,
-          offeredValue: offeredValue ? Number(offeredValue) : undefined,
+          km: km ? parseMaskInteger(km) : undefined,
+          fipeValue: fipeValue ? parseMaskNumber(fipeValue) : undefined,
+          offeredValue: offeredValue ? parseMaskNumber(offeredValue) : undefined,
           notes: notes || undefined,
         });
 
@@ -231,24 +233,25 @@ export default function NewEvaluationPage() {
                   <label htmlFor="plate" className="form-label">
                     Placa
                   </label>
-                  <input
+                  <MaskedInput
                     id="plate"
-                    type="text"
+                    mask="plate"
                     className="form-control"
                     value={plate}
-                    onChange={(e) => setPlate(e.target.value.toUpperCase())}
+                    onValueChange={setPlate}
                   />
                 </div>
                 <div className="col-md-3 mb-3">
                   <label htmlFor="yearModel" className="form-label">
                     Ano
                   </label>
-                  <input
+                  <MaskedInput
                     id="yearModel"
-                    type="number"
+                    mask="digits"
+                    maxDigits={4}
                     className="form-control"
                     value={yearModel}
-                    onChange={(e) => setYearModel(e.target.value)}
+                    onValueChange={setYearModel}
                   />
                 </div>
                 <div className="col-md-3 mb-3">
@@ -267,12 +270,13 @@ export default function NewEvaluationPage() {
                   <label htmlFor="km" className="form-label">
                     Km
                   </label>
-                  <input
+                  <MaskedInput
                     id="km"
-                    type="number"
+                    mask="integer"
+                    maxDigits={7}
                     className="form-control"
                     value={km}
-                    onChange={(e) => setKm(e.target.value)}
+                    onValueChange={setKm}
                   />
                 </div>
               </div>
@@ -281,26 +285,24 @@ export default function NewEvaluationPage() {
                   <label htmlFor="fipeValue" className="form-label">
                     FIPE
                   </label>
-                  <input
+                  <MaskedInput
                     id="fipeValue"
-                    type="number"
-                    step="0.01"
+                    mask="currency"
                     className="form-control"
                     value={fipeValue}
-                    onChange={(e) => setFipeValue(e.target.value)}
+                    onValueChange={setFipeValue}
                   />
                 </div>
                 <div className="col-md-6 mb-3">
                   <label htmlFor="offeredValue" className="form-label">
                     Valor ofertado
                   </label>
-                  <input
+                  <MaskedInput
                     id="offeredValue"
-                    type="number"
-                    step="0.01"
+                    mask="currency"
                     className="form-control"
                     value={offeredValue}
-                    onChange={(e) => setOfferedValue(e.target.value)}
+                    onValueChange={setOfferedValue}
                   />
                 </div>
               </div>

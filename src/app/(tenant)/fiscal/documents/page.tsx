@@ -3,6 +3,7 @@ import { PageTitle } from '@/components/dastone/PageTitle';
 import { Card } from '@/components/dastone/Card';
 import { createClient } from '@/lib/supabase/server';
 import { getTenantContext } from '@/lib/settings/tenant-context';
+import { TableEmptyRow } from '@/components/dastone/EmptyState';
 import {
   formatDocumentNature,
   formatDocumentStatus,
@@ -117,11 +118,11 @@ export default async function FiscalDocumentsPage() {
                   );
                 })
               ) : (
-                <tr>
-                  <td colSpan={8} className="text-center text-muted py-4">
-                    Nenhum documento fiscal.
-                  </td>
-                </tr>
+                <TableEmptyRow
+                  colSpan={8}
+                  title="Nenhum documento fiscal."
+                  icon="iconoir-receipt"
+                />
               )}
             </tbody>
           </table>

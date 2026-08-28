@@ -3,6 +3,7 @@ import { Card } from '@/components/dastone/Card';
 import { AlertBadge } from '@/components/dastone/AlertBadge';
 import { AlertRulesPanel } from '@/components/settings/AlertRulesPanel';
 import { createClient } from '@/lib/supabase/server';
+import { TableEmptyRow } from '@/components/dastone/EmptyState';
 
 export default async function AlertRulesPage() {
   const supabase = await createClient();
@@ -54,11 +55,11 @@ export default async function AlertRulesPage() {
                   </tr>
                 ))
               ) : (
-                <tr>
-                  <td colSpan={5} className="text-center text-muted py-4">
-                    Nenhuma regra cadastrada.
-                  </td>
-                </tr>
+                <TableEmptyRow
+                  colSpan={5}
+                  title="Nenhuma regra cadastrada."
+                  icon="iconoir-bell"
+                />
               )}
             </tbody>
           </table>

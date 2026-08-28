@@ -2,6 +2,8 @@
 
 import { useRouter } from 'next/navigation';
 import { FormEvent, useCallback, useState } from 'react';
+import { MaskedInput } from '@/components/dastone/MaskedInput';
+import { parseMaskInteger } from '@/lib/masks';
 import { closeOrder } from '@/lib/orders/orders';
 import { createClient } from '@/lib/supabase/client';
 import { getClientTenantContext } from '@/lib/settings/client-context';
@@ -90,7 +92,7 @@ export function DeliveryForm({ orderId, orderStatus, deliveryStatus }: DeliveryF
           tenantId: context.tenantId,
           userId: context.userId,
           orderId,
-          deliveryKm: deliveryKm ? Number(deliveryKm) : undefined,
+          deliveryKm: deliveryKm ? parseMaskInteger(deliveryKm) : undefined,
           clientNotes: clientNotes || undefined,
           wentWell,
         });
@@ -113,12 +115,13 @@ export function DeliveryForm({ orderId, orderStatus, deliveryStatus }: DeliveryF
     <form onSubmit={handleSubmit}>
       <div className="row">
         <div className="col-md-4 mb-2">
-          <input
-            type="number"
+          <MaskedInput
+            mask="integer"
+            maxDigits={7}
             className="form-control form-control-sm"
             placeholder="Km entrega"
             value={deliveryKm}
-            onChange={(e) => setDeliveryKm(e.target.value)}
+            onValueChange={setDeliveryKm}
           />
         </div>
         <div className="col-md-4 mb-2">

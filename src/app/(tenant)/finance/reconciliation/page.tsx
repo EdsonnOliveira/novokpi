@@ -4,6 +4,7 @@ import { ReconciliationActions } from '@/components/finance/ReconciliationAction
 import { createClient } from '@/lib/supabase/server';
 import { getTenantContext } from '@/lib/settings/tenant-context';
 import { redirect } from 'next/navigation';
+import { TableEmptyRow } from '@/components/dastone/EmptyState';
 
 function formatCurrency(value: number) {
   return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
@@ -97,11 +98,11 @@ export default async function FinanceReconciliationPage() {
                   </tr>
                 ))
               ) : (
-                <tr>
-                  <td colSpan={6} className="text-center text-muted py-4">
-                    Nenhum item de conciliação.
-                  </td>
-                </tr>
+                <TableEmptyRow
+                  colSpan={6}
+                  title="Nenhum item de conciliação."
+                  icon="iconoir-check-circle"
+                />
               )}
             </tbody>
           </table>

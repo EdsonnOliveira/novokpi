@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { TableEmptyRow } from '@/components/dastone/EmptyState';
 import { PageTitle } from '@/components/dastone/PageTitle';
 import { Card } from '@/components/dastone/Card';
 import { createClient } from '@/lib/supabase/server';
@@ -96,12 +97,13 @@ export default async function EvaluationPage() {
                   );
                 })
               ) : (
-                <tr>
-                  <td colSpan={8} className="text-center text-muted py-4">
-                    Nenhuma avaliação.{' '}
-                    <Link href="/crm/evaluation/new">Registrar avaliação</Link>
-                  </td>
-                </tr>
+                <TableEmptyRow
+                  colSpan={8}
+                  title="Nenhuma avaliação."
+                  icon="iconoir-search"
+                  actionLabel="Registrar avaliação"
+                  actionHref="/crm/evaluation/new"
+                />
               )}
             </tbody>
           </table>

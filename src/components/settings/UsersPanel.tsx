@@ -5,6 +5,7 @@ import { createClient } from '@/lib/supabase/client';
 import { getClientTenantContext } from '@/lib/settings/client-context';
 import type { ProfileListRow, RoleListRow } from '@/types/settings';
 import { joinOne } from '@/types/settings';
+import { TableEmptyRow } from '@/components/dastone/EmptyState';
 
 interface UsersPanelProps {
   profiles: ProfileListRow[];
@@ -155,11 +156,11 @@ export function UsersPanel({ profiles, roles }: UsersPanelProps) {
                 );
               })
             ) : (
-              <tr>
-                <td colSpan={6} className="text-center text-muted py-4">
-                  Nenhum usuário encontrado.
-                </td>
-              </tr>
+              <TableEmptyRow
+                colSpan={6}
+                title="Nenhum usuário encontrado."
+                icon="iconoir-group"
+              />
             )}
           </tbody>
         </table>

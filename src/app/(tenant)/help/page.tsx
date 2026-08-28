@@ -1,3 +1,4 @@
+import { EmptyState } from '@/components/dastone/EmptyState';
 import { PageTitle } from '@/components/dastone/PageTitle';
 import { Card } from '@/components/dastone/Card';
 import { createClient } from '@/lib/supabase/server';
@@ -68,7 +69,10 @@ export default async function HelpPage() {
         ))
       ) : (
         <Card>
-          <p className="text-muted mb-0">Nenhum vídeo de ajuda cadastrado no Supabase.</p>
+          <EmptyState
+            title="Nenhum vídeo de ajuda cadastrado."
+            icon="iconoir-media-video"
+          />
         </Card>
       )}
     </>

@@ -5,7 +5,9 @@ import { useRouter } from 'next/navigation';
 import { FormEvent, useCallback, useEffect, useMemo, useState } from 'react';
 import { PageTitle } from '@/components/dastone/PageTitle';
 import { Card } from '@/components/dastone/Card';
+import { MaskedInput } from '@/components/dastone/MaskedInput';
 import { FormPageSkeleton } from '@/components/dastone/skeleton/FormPageSkeleton';
+import { parseMaskInteger, parseMaskNumber } from '@/lib/masks';
 import { createQuickVehicleEntry, findVehicleHistoryByPlate } from '@/lib/inventory/vehicles';
 import { createClient } from '@/lib/supabase/client';
 import { getClientTenantContext } from '@/lib/settings/client-context';
@@ -153,14 +155,14 @@ export default function QuickInventoryPage() {
           yearManufacture: Number(yearManufacture),
           yearModel: Number(yearModel),
           color,
-          km: Number(km),
+          km: parseMaskInteger(km),
           plate,
           modalityId,
-          acquisitionCost: acquisitionCost ? Number(acquisitionCost) : undefined,
-          salePrice: salePrice ? Number(salePrice) : undefined,
-          fipeValue: fipeValue ? Number(fipeValue) : undefined,
-          consignmentNetValue: consignmentNetValue ? Number(consignmentNetValue) : undefined,
-          consignmentPercent: consignmentPercent ? Number(consignmentPercent) : undefined,
+          acquisitionCost: acquisitionCost ? parseMaskNumber(acquisitionCost) : undefined,
+          salePrice: salePrice ? parseMaskNumber(salePrice) : undefined,
+          fipeValue: fipeValue ? parseMaskNumber(fipeValue) : undefined,
+          consignmentNetValue: consignmentNetValue ? parseMaskNumber(consignmentNetValue) : undefined,
+          consignmentPercent: consignmentPercent ? parseMaskNumber(consignmentPercent) : undefined,
         });
 
         router.push(`/inventory/${result.passage.id}`);
@@ -213,13 +215,13 @@ export default function QuickInventoryPage() {
                   Placa
                 </label>
                 <div className="input-group">
-                  <input
+                  <MaskedInput
                     id="plate"
-                    type="text"
+                    mask="plate"
                     className="form-control"
                     value={plate}
-                    onChange={(e) => setPlate(e.target.value.toUpperCase())}
-                    onBlur={(e) => checkPlateHistory(e.target.value)}
+                    onValueChange={setPlate}
+                    onBlur={(event) => checkPlateHistory(event.target.value)}
                     required
                   />
                   <button
@@ -300,12 +302,13 @@ export default function QuickInventoryPage() {
                   <label htmlFor="yearManufacture" className="form-label">
                     Ano fab.
                   </label>
-                  <input
+                  <MaskedInput
                     id="yearManufacture"
-                    type="number"
+                    mask="digits"
+                    maxDigits={4}
                     className="form-control"
                     value={yearManufacture}
-                    onChange={(e) => setYearManufacture(e.target.value)}
+                    onValueChange={setYearManufacture}
                     required
                   />
                 </div>
@@ -313,12 +316,13 @@ export default function QuickInventoryPage() {
                   <label htmlFor="yearModel" className="form-label">
                     Ano mod.
                   </label>
-                  <input
+                  <MaskedInput
                     id="yearModel"
-                    type="number"
+                    mask="digits"
+                    maxDigits={4}
                     className="form-control"
                     value={yearModel}
-                    onChange={(e) => setYearModel(e.target.value)}
+                    onValueChange={setYearModel}
                     required
                   />
                 </div>
@@ -339,12 +343,13 @@ export default function QuickInventoryPage() {
                   <label htmlFor="km" className="form-label">
                     Km
                   </label>
-                  <input
+                  <MaskedInput
                     id="km"
-                    type="number"
+                    mask="integer"
+                    maxDigits={7}
                     className="form-control"
                     value={km}
-                    onChange={(e) => setKm(e.target.value)}
+                    onValueChange={setKm}
                     required
                   />
                 </div>
@@ -373,39 +378,36 @@ export default function QuickInventoryPage() {
                   <label htmlFor="acquisitionCost" className="form-label">
                     Custo aquisição
                   </label>
-                  <input
+                  <MaskedInput
                     id="acquisitionCost"
-                    type="number"
-                    step="0.01"
+                    mask="currency"
                     className="form-control"
                     value={acquisitionCost}
-                    onChange={(e) => setAcquisitionCost(e.target.value)}
+                    onValueChange={setAcquisitionCost}
                   />
                 </div>
                 <div className="col-md-4 mb-3">
                   <label htmlFor="salePrice" className="form-label">
                     Valor de venda
                   </label>
-                  <input
+                  <MaskedInput
                     id="salePrice"
-                    type="number"
-                    step="0.01"
+                    mask="currency"
                     className="form-control"
                     value={salePrice}
-                    onChange={(e) => setSalePrice(e.target.value)}
+                    onValueChange={setSalePrice}
                   />
                 </div>
                 <div className="col-md-4 mb-3">
                   <label htmlFor="fipeValue" className="form-label">
                     FIPE
                   </label>
-                  <input
+                  <MaskedInput
                     id="fipeValue"
-                    type="number"
-                    step="0.01"
+                    mask="currency"
                     className="form-control"
                     value={fipeValue}
-                    onChange={(e) => setFipeValue(e.target.value)}
+                    onValueChange={setFipeValue}
                   />
                 </div>
               </div>
@@ -415,26 +417,24 @@ export default function QuickInventoryPage() {
                     <label htmlFor="consignmentNetValue" className="form-label">
                       Valor líquido proprietário
                     </label>
-                    <input
+                    <MaskedInput
                       id="consignmentNetValue"
-                      type="number"
-                      step="0.01"
+                      mask="currency"
                       className="form-control"
                       value={consignmentNetValue}
-                      onChange={(e) => setConsignmentNetValue(e.target.value)}
+                      onValueChange={setConsignmentNetValue}
                     />
                   </div>
                   <div className="col-md-6 mb-3">
                     <label htmlFor="consignmentPercent" className="form-label">
                       Percentual loja (%)
                     </label>
-                    <input
+                    <MaskedInput
                       id="consignmentPercent"
-                      type="number"
-                      step="0.01"
+                      mask="currency"
                       className="form-control"
                       value={consignmentPercent}
-                      onChange={(e) => setConsignmentPercent(e.target.value)}
+                      onValueChange={setConsignmentPercent}
                     />
                   </div>
                 </div>

@@ -3,6 +3,7 @@
 import { FormEvent, useCallback, useState } from 'react';
 import { createClient } from '@/lib/supabase/client';
 import type { TaxonomyBrandRow } from '@/types/master';
+import { TableEmptyRow } from '@/components/dastone/EmptyState';
 
 interface TaxonomyPanelProps {
   brands: TaxonomyBrandRow[];
@@ -138,11 +139,11 @@ export function TaxonomyPanel({ brands }: TaxonomyPanelProps) {
                 </tr>
               ))
             ) : (
-              <tr>
-                <td colSpan={4} className="text-center text-muted py-4">
-                  Nenhuma marca master cadastrada.
-                </td>
-              </tr>
+              <TableEmptyRow
+                colSpan={4}
+                title="Nenhuma marca master cadastrada."
+                icon="iconoir-car"
+              />
             )}
           </tbody>
         </table>

@@ -12,6 +12,7 @@ import {
   type PassageListRow,
 } from '@/types/inventory';
 import { redirect } from 'next/navigation';
+import { TableEmptyRow } from '@/components/dastone/EmptyState';
 
 export default async function InventoryPage({
   searchParams,
@@ -154,11 +155,11 @@ export default async function InventoryPage({
                   );
                 })
               ) : (
-                <tr>
-                  <td colSpan={7} className="text-center text-muted py-4">
-                    Nenhum veículo encontrado.
-                  </td>
-                </tr>
+                <TableEmptyRow
+                  colSpan={7}
+                  title="Nenhum veículo encontrado."
+                  icon="iconoir-car"
+                />
               )}
             </tbody>
           </table>

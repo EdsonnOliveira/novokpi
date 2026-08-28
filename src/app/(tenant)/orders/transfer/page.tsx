@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { PageTitle } from '@/components/dastone/PageTitle';
 import { Card } from '@/components/dastone/Card';
 import { createClient } from '@/lib/supabase/server';
+import { TableEmptyRow } from '@/components/dastone/EmptyState';
 import {
   formatOrderNumber,
   formatTransferStatus,
@@ -130,11 +131,11 @@ export default async function TransferPage() {
                   );
                 })
               ) : (
-                <tr>
-                  <td colSpan={10} className="text-center text-muted py-4">
-                    Nenhuma transferência registrada.
-                  </td>
-                </tr>
+                <TableEmptyRow
+                  colSpan={10}
+                  title="Nenhuma transferência registrada."
+                  icon="iconoir-refresh-double"
+                />
               )}
             </tbody>
           </table>

@@ -3,6 +3,7 @@ import { Card } from '@/components/dastone/Card';
 import { AccountForm } from '@/components/finance/AccountForm';
 import { createClient } from '@/lib/supabase/server';
 import { formatAccountType, formatCurrency } from '@/types/finance';
+import { TableEmptyRow } from '@/components/dastone/EmptyState';
 
 export default async function FinanceAccountsPage() {
   const supabase = await createClient();
@@ -49,11 +50,11 @@ export default async function FinanceAccountsPage() {
                   </tr>
                 ))
               ) : (
-                <tr>
-                  <td colSpan={5} className="text-center text-muted py-4">
-                    Nenhuma conta cadastrada.
-                  </td>
-                </tr>
+                <TableEmptyRow
+                  colSpan={5}
+                  title="Nenhuma conta cadastrada."
+                  icon="iconoir-bank"
+                />
               )}
             </tbody>
           </table>

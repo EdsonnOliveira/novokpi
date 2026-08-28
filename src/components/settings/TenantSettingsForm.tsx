@@ -2,6 +2,7 @@
 
 import { FormEvent, useCallback, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { MaskedInput } from '@/components/dastone/MaskedInput';
 import { createClient } from '@/lib/supabase/client';
 import type { TenantRow } from '@/types/platform';
 
@@ -73,7 +74,8 @@ export function TenantSettingsForm({ tenant }: TenantSettingsFormProps) {
         </div>
         <div className="col-md-4 mb-2">
           <label className="form-label form-label-sm">CNPJ / CPF</label>
-          <input
+          <MaskedInput
+            mask="cpfCnpj"
             name="document"
             className="form-control form-control-sm"
             defaultValue={tenant.document ?? ''}
@@ -81,7 +83,8 @@ export function TenantSettingsForm({ tenant }: TenantSettingsFormProps) {
         </div>
         <div className="col-md-4 mb-2">
           <label className="form-label form-label-sm">Telefone</label>
-          <input
+          <MaskedInput
+            mask="phone"
             name="phone"
             className="form-control form-control-sm"
             defaultValue={tenant.phone ?? ''}

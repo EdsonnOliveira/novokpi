@@ -1,6 +1,8 @@
 'use client';
 
 import { FormEvent, useCallback, useState } from 'react';
+import { MaskedInput } from '@/components/dastone/MaskedInput';
+import { parseMaskNumber } from '@/lib/masks';
 import { createDispatcherRecord } from '@/lib/finance/transactions';
 import { createClient } from '@/lib/supabase/client';
 import { getClientTenantContext } from '@/lib/settings/client-context';
@@ -32,7 +34,7 @@ export function DispatcherForm() {
           tenantId: context.tenantId,
           userId: context.userId,
           purpose,
-          advanceReceived: Number(advanceReceived),
+          advanceReceived: parseMaskNumber(advanceReceived),
           notes: notes || undefined,
         });
         window.location.reload();
@@ -58,13 +60,12 @@ export function DispatcherForm() {
           />
         </div>
         <div className="col-md-3 mb-2">
-          <input
-            type="number"
-            step="0.01"
+          <MaskedInput
+            mask="currency"
             className="form-control form-control-sm"
             placeholder="Adiantamento recebido"
             value={advanceReceived}
-            onChange={(e) => setAdvanceReceived(e.target.value)}
+            onValueChange={setAdvanceReceived}
             required
           />
         </div>

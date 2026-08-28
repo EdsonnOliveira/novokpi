@@ -5,7 +5,9 @@ import { useRouter } from 'next/navigation';
 import { FormEvent, useCallback, useEffect, useState } from 'react';
 import { PageTitle } from '@/components/dastone/PageTitle';
 import { Card } from '@/components/dastone/Card';
+import { MaskedInput } from '@/components/dastone/MaskedInput';
 import { FormPageSkeleton } from '@/components/dastone/skeleton/FormPageSkeleton';
+import { parseMaskNumber } from '@/lib/masks';
 import { createReservation } from '@/lib/orders/orders';
 import { createClient } from '@/lib/supabase/client';
 import { getClientTenantContext } from '@/lib/settings/client-context';
@@ -138,15 +140,15 @@ export default function ReservationPage() {
           personId: deal.person_id,
           vehiclePassageId: passageId,
           channelId: deal.channel_id ?? undefined,
-          vehicleValue: Number(vehicleValue),
-          totalValue: Number(totalValue),
+          vehicleValue: parseMaskNumber(vehicleValue),
+          totalValue: parseMaskNumber(totalValue),
           notes: notes || undefined,
           payments: paymentAmount
             ? [
                 {
                   paymentMethodId: paymentMethodId || undefined,
                   paymentMethodName: selectedMethod?.name,
-                  amount: Number(paymentAmount),
+                  amount: parseMaskNumber(paymentAmount),
                 },
               ]
             : undefined,
@@ -155,7 +157,7 @@ export default function ReservationPage() {
                 {
                   productTypeId: selectedProduct.id,
                   productName: selectedProduct.name,
-                  amount: productAmount ? Number(productAmount) : undefined,
+                  amount: productAmount ? parseMaskNumber(productAmount) : undefined,
                 },
               ]
             : undefined,
@@ -255,13 +257,12 @@ export default function ReservationPage() {
                   <label htmlFor="vehicleValue" className="form-label">
                     Valor do veículo
                   </label>
-                  <input
+                  <MaskedInput
                     id="vehicleValue"
-                    type="number"
-                    step="0.01"
+                    mask="currency"
                     className="form-control"
                     value={vehicleValue}
-                    onChange={(e) => setVehicleValue(e.target.value)}
+                    onValueChange={setVehicleValue}
                     required
                   />
                 </div>
@@ -269,13 +270,12 @@ export default function ReservationPage() {
                   <label htmlFor="totalValue" className="form-label">
                     Valor total da operação
                   </label>
-                  <input
+                  <MaskedInput
                     id="totalValue"
-                    type="number"
-                    step="0.01"
+                    mask="currency"
                     className="form-control"
                     value={totalValue}
-                    onChange={(e) => setTotalValue(e.target.value)}
+                    onValueChange={setTotalValue}
                     required
                   />
                 </div>
@@ -303,13 +303,12 @@ export default function ReservationPage() {
                   <label htmlFor="paymentAmount" className="form-label">
                     Valor pagamento
                   </label>
-                  <input
+                  <MaskedInput
                     id="paymentAmount"
-                    type="number"
-                    step="0.01"
+                    mask="currency"
                     className="form-control"
                     value={paymentAmount}
-                    onChange={(e) => setPaymentAmount(e.target.value)}
+                    onValueChange={setPaymentAmount}
                   />
                 </div>
                 <div className="col-md-4 mb-3">
@@ -336,13 +335,12 @@ export default function ReservationPage() {
                   <label htmlFor="productAmount" className="form-label">
                     Valor produto adicional
                   </label>
-                  <input
+                  <MaskedInput
                     id="productAmount"
-                    type="number"
-                    step="0.01"
+                    mask="currency"
                     className="form-control"
                     value={productAmount}
-                    onChange={(e) => setProductAmount(e.target.value)}
+                    onValueChange={setProductAmount}
                   />
                 </div>
               ) : null}

@@ -2,6 +2,7 @@ import { PageTitle } from '@/components/dastone/PageTitle';
 import { Card } from '@/components/dastone/Card';
 import { MasterTenantAccessButton } from '@/components/master/MasterTenantAccessButton';
 import { createClient } from '@/lib/supabase/server';
+import { TableEmptyRow } from '@/components/dastone/EmptyState';
 
 export default async function MasterTenantAccessPage() {
   const supabase = await createClient();
@@ -48,11 +49,11 @@ export default async function MasterTenantAccessPage() {
                   </tr>
                 ))
               ) : (
-                <tr>
-                  <td colSpan={5} className="text-center text-muted py-4">
-                    Nenhuma loja cadastrada.
-                  </td>
-                </tr>
+                <TableEmptyRow
+                  colSpan={5}
+                  title="Nenhuma loja cadastrada."
+                  icon="iconoir-shop"
+                />
               )}
             </tbody>
           </table>

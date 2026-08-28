@@ -2,6 +2,8 @@
 
 import { useRouter } from 'next/navigation';
 import { FormEvent, useCallback, useState } from 'react';
+import { MaskedInput } from '@/components/dastone/MaskedInput';
+import { parseMaskNumber } from '@/lib/masks';
 import type { FiscalDocumentNature } from '@/types/fiscal';
 
 const NATURE_OPTIONS: { value: FiscalDocumentNature; label: string }[] = [
@@ -34,7 +36,7 @@ export function NfeEmitForm() {
             recipientName: form.get('recipientName'),
             recipientDocument: form.get('recipientDocument'),
             recipientEmail: form.get('recipientEmail') || undefined,
-            totalValue: Number(form.get('totalValue')),
+            totalValue: parseMaskNumber(String(form.get('totalValue'))),
             cfop: form.get('cfop'),
             natureOperation: form.get('natureOperation'),
             productDescription: form.get('productDescription'),
@@ -81,22 +83,15 @@ export function NfeEmitForm() {
         </div>
         <div className="col-md-3 mb-2">
           <label className="form-label form-label-sm">CFOP</label>
-          <input name="cfop" className="form-control form-control-sm" defaultValue="5102" required />
+          <MaskedInput mask="digits" maxDigits={4} name="cfop" className="form-control form-control-sm" defaultValue="5102" required />
         </div>
         <div className="col-md-3 mb-2">
           <label className="form-label form-label-sm">NCM</label>
-          <input name="ncm" className="form-control form-control-sm" defaultValue="87032310" required />
+          <MaskedInput mask="digits" maxDigits={8} name="ncm" className="form-control form-control-sm" defaultValue="87032310" required />
         </div>
         <div className="col-md-3 mb-2">
           <label className="form-label form-label-sm">Valor total</label>
-          <input
-            name="totalValue"
-            type="number"
-            step="0.01"
-            min="0.01"
-            className="form-control form-control-sm"
-            required
-          />
+          <MaskedInput mask="currency" name="totalValue" className="form-control form-control-sm" required />
         </div>
         <div className="col-md-5 mb-2">
           <label className="form-label form-label-sm">Destinatário</label>
@@ -104,7 +99,7 @@ export function NfeEmitForm() {
         </div>
         <div className="col-md-4 mb-2">
           <label className="form-label form-label-sm">CPF/CNPJ destinatário</label>
-          <input name="recipientDocument" className="form-control form-control-sm" required />
+          <MaskedInput mask="cpfCnpj" name="recipientDocument" className="form-control form-control-sm" required />
         </div>
         <div className="col-md-4 mb-2">
           <label className="form-label form-label-sm">E-mail destinatário</label>

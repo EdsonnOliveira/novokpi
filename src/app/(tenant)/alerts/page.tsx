@@ -7,6 +7,7 @@ import { createClient } from '@/lib/supabase/server';
 import { getTenantContext } from '@/lib/settings/tenant-context';
 import { formatAlertLevelLabel, type TenantAlertRow } from '@/types/platform';
 import { redirect } from 'next/navigation';
+import { TableEmptyRow } from '@/components/dastone/EmptyState';
 
 export default async function AlertsPage() {
   const supabase = await createClient();
@@ -72,11 +73,11 @@ export default async function AlertsPage() {
                   </tr>
                 ))
               ) : (
-                <tr>
-                  <td colSpan={6} className="text-center text-muted py-4">
-                    Nenhum alerta ativo.
-                  </td>
-                </tr>
+                <TableEmptyRow
+                  colSpan={6}
+                  title="Nenhum alerta ativo."
+                  icon="iconoir-bell"
+                />
               )}
             </tbody>
           </table>

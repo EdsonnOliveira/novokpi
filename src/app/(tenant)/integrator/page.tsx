@@ -4,6 +4,7 @@ import { Card } from '@/components/dastone/Card';
 import { KpiGrid } from '@/components/dastone/KpiGrid';
 import { PortalAdsTable } from '@/components/integrator/PortalAdsTable';
 import { createClient } from '@/lib/supabase/server';
+import { TableEmptyRow } from '@/components/dastone/EmptyState';
 import {
   formatSyncStatus,
   joinOne,
@@ -125,11 +126,11 @@ export default async function IntegratorPage() {
                   </tr>
                 ))
               ) : (
-                <tr>
-                  <td colSpan={5} className="text-center text-muted py-4">
-                    Nenhum portal configurado.
-                  </td>
-                </tr>
+                <TableEmptyRow
+                  colSpan={5}
+                  title="Nenhum portal configurado."
+                  icon="iconoir-globe"
+                />
               )}
             </tbody>
           </table>

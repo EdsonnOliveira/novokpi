@@ -14,6 +14,7 @@ import {
   type OrderListRow,
 } from '@/types/orders';
 import { redirect } from 'next/navigation';
+import { TableEmptyRow } from '@/components/dastone/EmptyState';
 
 export default async function OrdersPage({
   searchParams,
@@ -156,11 +157,11 @@ export default async function OrdersPage({
                   );
                 })
               ) : (
-                <tr>
-                  <td colSpan={7} className="text-center text-muted py-4">
-                    Nenhum pedido encontrado.
-                  </td>
-                </tr>
+                <TableEmptyRow
+                  colSpan={7}
+                  title="Nenhum pedido encontrado."
+                  icon="iconoir-cart"
+                />
               )}
             </tbody>
           </table>

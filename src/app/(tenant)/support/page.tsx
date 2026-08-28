@@ -2,6 +2,7 @@ import { PageTitle } from '@/components/dastone/PageTitle';
 import { Card } from '@/components/dastone/Card';
 import { SupportTicketForm } from '@/components/settings/SupportTicketForm';
 import { createClient } from '@/lib/supabase/server';
+import { TableEmptyRow } from '@/components/dastone/EmptyState';
 
 export default async function SupportPage() {
   const supabase = await createClient();
@@ -50,11 +51,11 @@ export default async function SupportPage() {
                   </tr>
                 ))
               ) : (
-                <tr>
-                  <td colSpan={4} className="text-center text-muted py-4">
-                    Nenhum chamado aberto.
-                  </td>
-                </tr>
+                <TableEmptyRow
+                  colSpan={4}
+                  title="Nenhum chamado aberto."
+                  icon="iconoir-headset-help"
+                />
               )}
             </tbody>
           </table>

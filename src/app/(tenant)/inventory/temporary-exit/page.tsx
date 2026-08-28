@@ -3,6 +3,7 @@ import { PageTitle } from '@/components/dastone/PageTitle';
 import { Card } from '@/components/dastone/Card';
 import { TemporaryExitForm } from '@/components/inventory/TemporaryExitForm';
 import { createClient } from '@/lib/supabase/server';
+import { TableEmptyRow } from '@/components/dastone/EmptyState';
 
 export default async function TemporaryExitPage() {
   const supabase = await createClient();
@@ -68,11 +69,11 @@ export default async function TemporaryExitPage() {
                   </tr>
                 ))
               ) : (
-                <tr>
-                  <td colSpan={4} className="text-center text-muted py-4">
-                    Nenhuma saída temporária em aberto.
-                  </td>
-                </tr>
+                <TableEmptyRow
+                  colSpan={4}
+                  title="Nenhuma saída temporária em aberto."
+                  icon="iconoir-log-out"
+                />
               )}
             </tbody>
           </table>

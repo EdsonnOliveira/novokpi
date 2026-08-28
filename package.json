@@ -18,8 +18,10 @@
     "@fullcalendar/timegrid": "^6.1.21",
     "@supabase/ssr": "^0.12.5",
     "@supabase/supabase-js": "^2.78.0",
+    "apexcharts": "^6.6.1",
     "next": "15.5.22",
     "react": "19.1.0",
+    "react-apexcharts": "^2.1.1",
     "react-dom": "19.1.0",
     "xlsx": "^0.18.5"
   },

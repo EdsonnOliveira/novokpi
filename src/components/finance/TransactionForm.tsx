@@ -2,6 +2,8 @@
 
 import { useRouter } from 'next/navigation';
 import { FormEvent, useCallback, useEffect, useState } from 'react';
+import { MaskedInput } from '@/components/dastone/MaskedInput';
+import { parseMaskNumber } from '@/lib/masks';
 import { createTransaction, payTransaction, reverseTransaction } from '@/lib/finance/transactions';
 import { createClient } from '@/lib/supabase/client';
 import { getClientTenantContext } from '@/lib/settings/client-context';
@@ -52,7 +54,7 @@ export function TransactionForm({ accounts, categories }: TransactionFormProps) 
           accountId,
           categoryId,
           transactionType,
-          amount: Number(amount),
+          amount: parseMaskNumber(amount),
           description,
           transactionDate,
           markAsPaid,
@@ -113,13 +115,12 @@ export function TransactionForm({ accounts, categories }: TransactionFormProps) 
           </select>
         </div>
         <div className="col-md-2 mb-2">
-          <input
-            type="number"
-            step="0.01"
+          <MaskedInput
+            mask="currency"
             className="form-control form-control-sm"
             placeholder="Valor"
             value={amount}
-            onChange={(e) => setAmount(e.target.value)}
+            onValueChange={setAmount}
             required
           />
         </div>

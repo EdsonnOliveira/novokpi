@@ -3,6 +3,7 @@ import { PageTitle } from '@/components/dastone/PageTitle';
 import { Card } from '@/components/dastone/Card';
 import { createClient } from '@/lib/supabase/server';
 import { formatCurrency, joinOne } from '@/types/orders';
+import { TableEmptyRow } from '@/components/dastone/EmptyState';
 
 interface ProductRow {
   id: string;
@@ -125,11 +126,11 @@ export default async function FinanceProductsPage() {
                   );
                 })
               ) : (
-                <tr>
-                  <td colSpan={8} className="text-center text-muted py-4">
-                    Nenhum produto adicional registrado.
-                  </td>
-                </tr>
+                <TableEmptyRow
+                  colSpan={8}
+                  title="Nenhum produto adicional registrado."
+                  icon="iconoir-box"
+                />
               )}
             </tbody>
           </table>

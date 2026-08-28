@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { PageTitle } from '@/components/dastone/PageTitle';
 import { Card } from '@/components/dastone/Card';
 import { createClient } from '@/lib/supabase/server';
+import { TableEmptyRow } from '@/components/dastone/EmptyState';
 
 export default async function MarketingOpportunitiesPage() {
   const supabase = await createClient();
@@ -59,11 +60,11 @@ export default async function MarketingOpportunitiesPage() {
                   </tr>
                 ))
               ) : (
-                <tr>
-                  <td colSpan={6} className="text-center text-muted py-4">
-                    Nenhuma oportunidade registrada.
-                  </td>
-                </tr>
+                <TableEmptyRow
+                  colSpan={6}
+                  title="Nenhuma oportunidade registrada."
+                  icon="iconoir-spark"
+                />
               )}
             </tbody>
           </table>

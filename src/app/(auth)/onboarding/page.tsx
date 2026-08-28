@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { FormEvent, useCallback, useState } from 'react';
+import { MaskedInput } from '@/components/dastone/MaskedInput';
 import { createClient } from '@/lib/supabase/client';
 
 function slugify(value: string): string {
@@ -190,24 +191,24 @@ export default function OnboardingPage() {
                         <label className="form-label" htmlFor="document">
                           CNPJ (opcional)
                         </label>
-                        <input
-                          type="text"
-                          className="form-control"
+                        <MaskedInput
+                          mask="cpfCnpj"
                           id="document"
+                          className="form-control"
                           value={document}
-                          onChange={(e) => setDocument(e.target.value)}
+                          onValueChange={setDocument}
                         />
                       </div>
                       <div className="form-group">
                         <label className="form-label" htmlFor="phone">
                           Telefone (opcional)
                         </label>
-                        <input
-                          type="tel"
-                          className="form-control"
+                        <MaskedInput
+                          mask="phone"
                           id="phone"
+                          className="form-control"
                           value={phone}
-                          onChange={(e) => setPhone(e.target.value)}
+                          onValueChange={setPhone}
                         />
                       </div>
                       {error ? (

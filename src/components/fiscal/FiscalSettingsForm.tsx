@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import { FormEvent, useCallback, useState } from 'react';
+import { MaskedInput } from '@/components/dastone/MaskedInput';
 import type { FiscalSettingsRow } from '@/types/fiscal';
 
 interface FiscalSettingsFormProps {
@@ -85,7 +86,8 @@ export function FiscalSettingsForm({ settings }: FiscalSettingsFormProps) {
         </div>
         <div className="col-md-4 mb-2">
           <label className="form-label form-label-sm">CNPJ</label>
-          <input
+          <MaskedInput
+            mask="cnpj"
             name="cnpj"
             className="form-control form-control-sm"
             defaultValue={settings.cnpj ?? ''}
@@ -110,7 +112,9 @@ export function FiscalSettingsForm({ settings }: FiscalSettingsFormProps) {
         </div>
         <div className="col-md-3 mb-2">
           <label className="form-label form-label-sm">Código IBGE município</label>
-          <input
+          <MaskedInput
+            mask="digits"
+            maxDigits={7}
             name="codigoMunicipio"
             className="form-control form-control-sm"
             defaultValue={settings.codigo_municipio ?? ''}
@@ -178,7 +182,12 @@ export function FiscalSettingsForm({ settings }: FiscalSettingsFormProps) {
         </div>
         <div className="col-md-2 mb-2">
           <label className="form-label form-label-sm">CEP</label>
-          <input name="cep" className="form-control form-control-sm" defaultValue={settings.cep ?? ''} />
+          <MaskedInput
+            mask="cep"
+            name="cep"
+            className="form-control form-control-sm"
+            defaultValue={settings.cep ?? ''}
+          />
         </div>
         <div className="col-md-3 mb-2">
           <label className="form-label form-label-sm">E-mail</label>
@@ -191,7 +200,8 @@ export function FiscalSettingsForm({ settings }: FiscalSettingsFormProps) {
         </div>
         <div className="col-md-3 mb-2">
           <label className="form-label form-label-sm">Telefone</label>
-          <input
+          <MaskedInput
+            mask="phone"
             name="telefone"
             className="form-control form-control-sm"
             defaultValue={settings.telefone ?? ''}

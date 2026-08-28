@@ -2,6 +2,8 @@
 
 import { FormEvent, useCallback, useState } from 'react';
 import { AnimatedModal } from '@/components/dastone/AnimatedModal';
+import { MaskedInput } from '@/components/dastone/MaskedInput';
+import { parseMaskNumber } from '@/lib/masks';
 import {
   addNegotiationNote,
   closeLostDeal,
@@ -132,8 +134,8 @@ export function DealActionsPanel({
           version: version || undefined,
           yearMin: yearMin ? Number(yearMin) : undefined,
           yearMax: yearMax ? Number(yearMax) : undefined,
-          priceMin: priceMin ? Number(priceMin) : undefined,
-          priceMax: priceMax ? Number(priceMax) : undefined,
+          priceMin: priceMin ? parseMaskNumber(priceMin) : undefined,
+          priceMax: priceMax ? parseMaskNumber(priceMax) : undefined,
           notes: interestNotes || undefined,
         });
         await addToDemandQueue(supabase, {
@@ -237,16 +239,16 @@ export function DealActionsPanel({
             <input type="text" className="form-control form-control-sm" placeholder="Versão" value={version} onChange={(e) => setVersion(e.target.value)} />
           </div>
           <div className="col-md-3 mb-2">
-            <input type="number" className="form-control form-control-sm" placeholder="Ano min" value={yearMin} onChange={(e) => setYearMin(e.target.value)} />
+            <MaskedInput mask="digits" maxDigits={4} className="form-control form-control-sm" placeholder="Ano min" value={yearMin} onValueChange={setYearMin} />
           </div>
           <div className="col-md-3 mb-2">
-            <input type="number" className="form-control form-control-sm" placeholder="Ano max" value={yearMax} onChange={(e) => setYearMax(e.target.value)} />
+            <MaskedInput mask="digits" maxDigits={4} className="form-control form-control-sm" placeholder="Ano max" value={yearMax} onValueChange={setYearMax} />
           </div>
           <div className="col-md-3 mb-2">
-            <input type="number" className="form-control form-control-sm" placeholder="Preço min" value={priceMin} onChange={(e) => setPriceMin(e.target.value)} />
+            <MaskedInput mask="currency" className="form-control form-control-sm" placeholder="Preço min" value={priceMin} onValueChange={setPriceMin} />
           </div>
           <div className="col-md-3 mb-2">
-            <input type="number" className="form-control form-control-sm" placeholder="Preço max" value={priceMax} onChange={(e) => setPriceMax(e.target.value)} />
+            <MaskedInput mask="currency" className="form-control form-control-sm" placeholder="Preço max" value={priceMax} onValueChange={setPriceMax} />
           </div>
           <div className="col-md-3 mb-2">
             <button type="submit" className="btn btn-light btn-sm w-100" disabled={loading}>

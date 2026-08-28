@@ -300,10 +300,10 @@ body {
   z-index: 1050;
 }
 
-.breadcrumb-item + .breadcrumb-item::before {
-  content: '/';
-  font-family: inherit;
-  font-weight: 400;
+.page-title-box .breadcrumb .breadcrumb-item + .breadcrumb-item::before {
+  content: '/' !important;
+  font-family: inherit !important;
+  font-weight: 400 !important;
   color: var(--bs-gray-500, #a8b5d1);
   float: left;
   padding-right: 0.5rem;
@@ -398,4 +398,34 @@ body {
     padding-left: 0.75rem;
     padding-right: 0.75rem;
   }
+}
+
+.kanban-deal-card {
+  cursor: grab;
+}
+
+.kanban-deal-card:active {
+  cursor: grabbing;
+}
+
+.kanban-board .thumb-sm {
+  width: 32px;
+  height: 32px;
+  font-size: 0.75rem;
+}
+
+.empty-state-icon {
+  width: 72px;
+  height: 72px;
+  font-size: 2rem;
+}
+
+.empty-state-icon-sm {
+  width: 56px;
+  height: 56px;
+  font-size: 1.5rem;
+}
+
+.kpi-grid-subtitle {
+  min-height: 1.25rem;
 }

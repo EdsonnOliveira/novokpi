@@ -2,6 +2,7 @@ import { PageTitle } from '@/components/dastone/PageTitle';
 import { Card } from '@/components/dastone/Card';
 import { TransactionActions, TransactionForm } from '@/components/finance/TransactionForm';
 import { createClient } from '@/lib/supabase/server';
+import { TableEmptyRow } from '@/components/dastone/EmptyState';
 import {
   formatCurrency,
   formatTransactionStatus,
@@ -112,11 +113,11 @@ export default async function FinanceTransactionsPage() {
                   );
                 })
               ) : (
-                <tr>
-                  <td colSpan={10} className="text-center text-muted py-4">
-                    Nenhum lançamento.
-                  </td>
-                </tr>
+                <TableEmptyRow
+                  colSpan={10}
+                  title="Nenhum lançamento."
+                  icon="iconoir-wallet"
+                />
               )}
             </tbody>
           </table>

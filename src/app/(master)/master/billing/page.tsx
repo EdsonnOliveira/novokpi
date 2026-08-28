@@ -2,6 +2,7 @@ import { PageTitle } from '@/components/dastone/PageTitle';
 import { Card } from '@/components/dastone/Card';
 import { createClient } from '@/lib/supabase/server';
 import { formatCurrency, formatSubscriptionStatus, joinOne, type BillingRow } from '@/types/master';
+import { TableEmptyRow } from '@/components/dastone/EmptyState';
 
 export default async function MasterBillingPage() {
   const supabase = await createClient();
@@ -79,11 +80,11 @@ export default async function MasterBillingPage() {
                   );
                 })
               ) : (
-                <tr>
-                  <td colSpan={6} className="text-center text-muted py-4">
-                    Nenhuma assinatura registrada.
-                  </td>
-                </tr>
+                <TableEmptyRow
+                  colSpan={6}
+                  title="Nenhuma assinatura registrada."
+                  icon="iconoir-credit-card"
+                />
               )}
             </tbody>
           </table>

@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { TableEmptyRow } from '@/components/dastone/EmptyState';
 import { PageTitle } from '@/components/dastone/PageTitle';
 import { Card } from '@/components/dastone/Card';
 import { createClient } from '@/lib/supabase/server';
@@ -143,12 +144,13 @@ export default async function CrmPage({
                   );
                 })
               ) : (
-                <tr>
-                  <td colSpan={7} className="text-center text-muted py-4">
-                    Nenhuma ficha encontrada.{' '}
-                    <Link href="/crm/new">Abrir Nova Ficha</Link>
-                  </td>
-                </tr>
+                <TableEmptyRow
+                  colSpan={7}
+                  title="Nenhuma ficha encontrada."
+                  icon="iconoir-page"
+                  actionLabel="Abrir Nova Ficha"
+                  actionHref="/crm/new"
+                />
               )}
             </tbody>
           </table>

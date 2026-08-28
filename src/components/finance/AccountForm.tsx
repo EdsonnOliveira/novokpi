@@ -1,6 +1,8 @@
 'use client';
 
 import { FormEvent, useCallback, useState } from 'react';
+import { MaskedInput } from '@/components/dastone/MaskedInput';
+import { parseMaskNumber } from '@/lib/masks';
 import { createFinancialAccount } from '@/lib/finance/transactions';
 import { createClient } from '@/lib/supabase/client';
 import { getClientTenantContext } from '@/lib/settings/client-context';
@@ -35,7 +37,7 @@ export function AccountForm() {
           name,
           slug: slug || name.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
           accountType,
-          initialBalance: initialBalance ? Number(initialBalance) : 0,
+          initialBalance: initialBalance ? parseMaskNumber(initialBalance) : 0,
         });
         window.location.reload();
       } catch (submitError) {
@@ -71,13 +73,12 @@ export function AccountForm() {
           </select>
         </div>
         <div className="col-md-2 mb-2">
-          <input
-            type="number"
-            step="0.01"
+          <MaskedInput
+            mask="currency"
             className="form-control form-control-sm"
             placeholder="Saldo inicial"
             value={initialBalance}
-            onChange={(e) => setInitialBalance(e.target.value)}
+            onValueChange={setInitialBalance}
           />
         </div>
         <div className="col-md-2 mb-2">
