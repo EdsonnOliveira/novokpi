@@ -23,6 +23,7 @@ export interface DealListRow {
   people: DealPersonJoin | DealPersonJoin[] | null;
   deal_stages: DealStageJoin | DealStageJoin[] | null;
   channels: DealChannelJoin | DealChannelJoin[] | null;
+  interest_profiles: DemandQueueInterestJoin | DemandQueueInterestJoin[] | null;
 }
 
 export interface DemandQueuePersonJoin {

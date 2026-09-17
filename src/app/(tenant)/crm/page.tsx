@@ -5,7 +5,7 @@ import { Card } from '@/components/dastone/Card';
 import { createClient } from '@/lib/supabase/server';
 import { getTenantContext } from '@/lib/settings/tenant-context';
 import { canViewAllDeals } from '@/lib/permissions/access';
-import { joinOne, type DealListRow } from '@/types/crm';
+import { formatInterestLabel, joinOne, type DealListRow } from '@/types/crm';
 import { StatusBadge } from '@/components/dastone/TableBadge';
 import { formatDealStatus } from '@/lib/ui/table-badges';
 import { redirect } from 'next/navigation';
@@ -48,7 +48,14 @@ export default async function CrmPage({
       channel_id,
       people:person_id ( full_name, phone, email ),
       deal_stages:stage_id ( name ),
-      channels:channel_id ( name )
+      channels:channel_id ( name ),
+      interest_profiles (
+        brand,
+        model,
+        version,
+        year_min,
+        year_max
+      )
     `)
     .eq('tenant_id', context.tenantId)
     .order('created_at', { ascending: false })
@@ -113,6 +120,7 @@ export default async function CrmPage({
                 <th>Contato</th>
                 <th>Etapa</th>
                 <th>Canal</th>
+                <th>Veículo de interesse</th>
                 <th>Próxima ação</th>
                 <th>Status</th>
               </tr>
@@ -123,6 +131,9 @@ export default async function CrmPage({
                   const person = joinOne(deal.people);
                   const stage = joinOne(deal.deal_stages);
                   const channel = joinOne(deal.channels);
+                  const interest = joinOne(deal.interest_profiles);
+                  const interestLabel = formatInterestLabel(interest);
+                  const vehicleLabel = interestLabel !== '—' ? interestLabel : deal.title ?? '—';
 
                   return (
                     <tr key={deal.id}>
@@ -138,6 +149,7 @@ export default async function CrmPage({
                       <td>{person?.phone ?? person?.email ?? '—'}</td>
                       <td>{stage?.name ?? '—'}</td>
                       <td>{channel?.name ?? '—'}</td>
+                      <td>{vehicleLabel}</td>
                       <td>
                         {deal.next_action_at
                           ? new Date(deal.next_action_at).toLocaleString('pt-BR')
@@ -151,7 +163,7 @@ export default async function CrmPage({
                 })
               ) : (
                 <TableEmptyRow
-                  colSpan={7}
+                  colSpan={8}
                   title="Nenhuma ficha encontrada."
                   icon="iconoir-page"
                   actionLabel="Abrir Nova Ficha"

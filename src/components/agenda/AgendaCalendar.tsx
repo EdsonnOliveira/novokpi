@@ -143,6 +143,18 @@ export function AgendaCalendar({ initialActivities, initialDeals }: AgendaCalend
     setError(null);
   }, []);
 
+  const openActivity = useCallback(
+    (activity: AgendaActivity) => {
+      if (activity.deal_id) {
+        router.push(`/crm/${activity.deal_id}`);
+        return;
+      }
+
+      openViewModal(activity);
+    },
+    [openViewModal, router],
+  );
+
   const refreshActivities = useCallback(async () => {
     const { data } = await supabase
       .from('activities')
@@ -210,10 +222,10 @@ export function AgendaCalendar({ initialActivities, initialDeals }: AgendaCalend
     (clickInfo: EventClickArg) => {
       const activity = clickInfo.event.extendedProps.activity as AgendaActivity | undefined;
       if (activity) {
-        openViewModal(activity);
+        openActivity(activity);
       }
     },
-    [openViewModal],
+    [openActivity],
   );
 
   const handleEventDrop = useCallback(
@@ -443,7 +455,7 @@ export function AgendaCalendar({ initialActivities, initialDeals }: AgendaCalend
                         <button
                           type="button"
                           className="btn btn-link text-start text-decoration-none p-0 border-0 flex-grow-1"
-                          onClick={() => openViewModal(activity)}
+                          onClick={() => openActivity(activity)}
                         >
                           <div className="d-flex align-items-center">
                             <i className="iconoir-eye me-2 text-muted" aria-hidden="true" />
