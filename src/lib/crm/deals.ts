@@ -2,7 +2,23 @@ import type { SupabaseClient } from '@supabase/supabase-js';
 import type { Database } from '@/types/database';
 import { writeAuditLog } from '@/lib/timeline/audit';
 import { writeTimelineEvent } from '@/lib/timeline/events';
+import { addToDemandQueue } from '@/lib/crm/queues';
+import { isValidPlate, normalizePlate } from '@/lib/integrations/plates';
 import { canAccessDeal, requirePermission } from '@/lib/permissions/access';
+
+type DealInterestMode = 'stock' | 'wait_queue';
+
+interface CreateDealInterestInput {
+  plate?: string;
+  brand?: string;
+  model?: string;
+  version?: string;
+  yearMin?: number;
+  yearMax?: number;
+  priceMin?: number;
+  priceMax?: number;
+  notes?: string;
+}
 
 interface CreateDealInput {
   tenantId: string;
@@ -15,6 +31,10 @@ interface CreateDealInput {
   title?: string;
   nextActionAt?: string;
   nextActionNote?: string;
+  interestMode: DealInterestMode;
+  interestPlate: string;
+  vehicleId?: string;
+  interest?: CreateDealInterestInput;
 }
 
 interface DuplicateMatch {
@@ -51,6 +71,8 @@ interface UpsertInterestInput {
   userId: string;
   dealId: string;
   personId: string;
+  vehicleId?: string;
+  plate?: string;
   brand?: string;
   model?: string;
   version?: string;
@@ -128,6 +150,88 @@ async function assertDealAccess(
   }
 }
 
+function joinRelationName(value: { name: string } | { name: string }[] | null | undefined) {
+  if (!value) return null;
+  return Array.isArray(value) ? value[0]?.name ?? null : value.name;
+}
+
+async function resolveStockVehicleInterest(
+  supabase: SupabaseClient<Database>,
+  tenantId: string,
+  vehicleId: string,
+) {
+  const { data: passage } = await supabase
+    .from('vehicle_passages')
+    .select('id, sale_price')
+    .eq('tenant_id', tenantId)
+    .eq('vehicle_id', vehicleId)
+    .eq('status', 'in_stock')
+    .order('stock_started_at', { ascending: false })
+    .limit(1)
+    .maybeSingle();
+
+  if (!passage) {
+    throw new Error('Veículo não está em estoque.');
+  }
+
+  const { data: vehicleData } = await supabase
+    .from('vehicles')
+    .select(`
+      id,
+      plate,
+      year_model,
+      vehicle_brands:brand_id ( name ),
+      vehicle_models:model_id ( name ),
+      vehicle_versions:version_id ( name )
+    `)
+    .eq('id', vehicleId)
+    .maybeSingle();
+
+  const vehicle = vehicleData as {
+    id: string;
+    plate: string | null;
+    year_model: number | null;
+    vehicle_brands: { name: string } | { name: string }[] | null;
+    vehicle_models: { name: string } | { name: string }[] | null;
+    vehicle_versions: { name: string } | { name: string }[] | null;
+  } | null;
+
+  if (!vehicle) {
+    throw new Error('Veículo não encontrado.');
+  }
+
+  const brand = joinRelationName(vehicle.vehicle_brands);
+  const model = joinRelationName(vehicle.vehicle_models);
+  const version = joinRelationName(vehicle.vehicle_versions);
+
+  return {
+    vehicleId: vehicle.id,
+    plate: vehicle.plate ? normalizePlate(vehicle.plate) : undefined,
+    brand,
+    model,
+    version,
+    yearMin: vehicle.year_model ?? undefined,
+    yearMax: vehicle.year_model ?? undefined,
+    priceMin: passage.sale_price ?? undefined,
+    priceMax: passage.sale_price ?? undefined,
+  };
+}
+
+function hasWaitQueueInterest(interest?: CreateDealInterestInput) {
+  if (!interest) return false;
+  return Boolean(
+    interest.plate?.trim()
+      || interest.brand?.trim()
+      || interest.model?.trim()
+      || interest.version?.trim()
+      || interest.yearMin
+      || interest.yearMax
+      || interest.priceMin
+      || interest.priceMax
+      || interest.notes?.trim(),
+  );
+}
+
 export async function createQuickDeal(
   supabase: SupabaseClient<Database>,
   input: CreateDealInput,
@@ -136,9 +240,20 @@ export async function createQuickDeal(
     throw new Error('Informe telefone, e-mail ou rede social.');
   }
 
-  if (!input.nextActionAt || !input.nextActionNote?.trim()) {
-    throw new Error('Próxima ação é obrigatória.');
+  const normalizedPlate = normalizePlate(input.interestPlate);
+  if (!isValidPlate(normalizedPlate)) {
+    throw new Error('Informe uma placa válida.');
   }
+
+  if (input.interestMode === 'stock') {
+    if (!input.vehicleId) {
+      throw new Error('Selecione o veículo em estoque.');
+    }
+  } else if (!hasWaitQueueInterest(input.interest)) {
+    throw new Error('Informe o perfil de interesse para a fila de espera.');
+  }
+
+  const hasNextAction = Boolean(input.nextActionAt && input.nextActionNote?.trim());
 
   const duplicates = await findDuplicateDeals(
     supabase,
@@ -196,8 +311,8 @@ export async function createQuickDeal(
       assigned_user_id: input.userId,
       is_duplicate_alert: duplicates.length > 0,
       duplicate_of_deal_id: duplicates[0]?.dealId ?? null,
-      next_action_at: input.nextActionAt,
-      next_action_note: input.nextActionNote,
+      next_action_at: hasNextAction ? input.nextActionAt : null,
+      next_action_note: hasNextAction ? input.nextActionNote : null,
     })
     .select('id, deal_number')
     .single();
@@ -213,15 +328,80 @@ export async function createQuickDeal(
     assigned_by: input.userId,
   });
 
-  await supabase.from('activities').insert({
-    tenant_id: input.tenantId,
-    deal_id: deal.id,
-    person_id: person.id,
-    assigned_user_id: input.userId,
-    title: input.nextActionNote,
-    due_at: input.nextActionAt,
-    created_by: input.userId,
-  });
+  if (hasNextAction && input.nextActionNote && input.nextActionAt) {
+    await supabase.from('activities').insert({
+      tenant_id: input.tenantId,
+      deal_id: deal.id,
+      person_id: person.id,
+      assigned_user_id: input.userId,
+      title: input.nextActionNote,
+      due_at: input.nextActionAt,
+      created_by: input.userId,
+    });
+  }
+
+  if (input.interestMode === 'stock' && input.vehicleId) {
+    const stockInterest = await resolveStockVehicleInterest(
+      supabase,
+      input.tenantId,
+      input.vehicleId,
+    );
+    await upsertDealInterest(supabase, {
+      tenantId: input.tenantId,
+      userId: input.userId,
+      dealId: deal.id,
+      personId: person.id,
+      vehicleId: stockInterest.vehicleId,
+      plate: normalizedPlate,
+      brand: stockInterest.brand ?? undefined,
+      model: stockInterest.model ?? undefined,
+      version: stockInterest.version ?? undefined,
+      yearMin: stockInterest.yearMin,
+      yearMax: stockInterest.yearMax,
+      priceMin: stockInterest.priceMin,
+      priceMax: stockInterest.priceMax,
+    });
+    await writeTimelineEvent(supabase, {
+      tenantId: input.tenantId,
+      entityType: 'deal',
+      entityId: deal.id,
+      eventType: 'interest_set',
+      title: 'Veículo de interesse vinculado ao estoque',
+      description: [stockInterest.brand, stockInterest.model].filter(Boolean).join(' '),
+      userId: input.userId,
+    });
+  } else if (input.interest) {
+    const interest = await upsertDealInterest(supabase, {
+      tenantId: input.tenantId,
+      userId: input.userId,
+      dealId: deal.id,
+      personId: person.id,
+      plate: normalizedPlate,
+      brand: input.interest.brand,
+      model: input.interest.model,
+      version: input.interest.version,
+      yearMin: input.interest.yearMin,
+      yearMax: input.interest.yearMax,
+      priceMin: input.interest.priceMin,
+      priceMax: input.interest.priceMax,
+      notes: input.interest.notes,
+    });
+    await addToDemandQueue(supabase, {
+      tenantId: input.tenantId,
+      userId: input.userId,
+      personId: person.id,
+      dealId: deal.id,
+      interestProfileId: (interest as { id: string }).id,
+    });
+    await writeTimelineEvent(supabase, {
+      tenantId: input.tenantId,
+      entityType: 'deal',
+      entityId: deal.id,
+      eventType: 'interest_set',
+      title: 'Cliente incluído na fila de espera',
+      userId: input.userId,
+    });
+  }
 
   await writeTimelineEvent(supabase, {
     tenantId: input.tenantId,
@@ -433,6 +613,8 @@ export async function upsertDealInterest(
     tenant_id: input.tenantId,
     person_id: input.personId,
     deal_id: input.dealId,
+    vehicle_id: input.vehicleId ?? null,
+    plate: input.plate ? normalizePlate(input.plate) : null,
     brand: input.brand ?? null,
     model: input.model ?? null,
     version: input.version ?? null,

@@ -50,6 +50,7 @@ export default async function CrmPage({
       deal_stages:stage_id ( name ),
       channels:channel_id ( name ),
       interest_profiles (
+        plate,
         brand,
         model,
         version,

@@ -33,6 +33,7 @@ export interface DemandQueuePersonJoin {
 }
 
 export interface DemandQueueInterestJoin {
+  plate: string | null;
   brand: string | null;
   model: string | null;
   version: string | null;
@@ -142,7 +143,7 @@ export function formatQueueStatus(status: string): string {
 
 export function formatInterestLabel(interest: DemandQueueInterestJoin | null): string {
   if (!interest) return '—';
-  const vehicle = [interest.brand, interest.model, interest.version].filter(Boolean).join(' ');
+  const vehicle = [interest.plate, interest.brand, interest.model, interest.version].filter(Boolean).join(' ');
   const years =
     interest.year_min || interest.year_max
       ? [interest.year_min, interest.year_max].filter(Boolean).join('–')
